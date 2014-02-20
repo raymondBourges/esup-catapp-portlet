@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <title></title>
+        <link href="lib/css/jquery.mmenu.all.css" rel="stylesheet" type="text/css" />
+        <link href="lib/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="lib/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+        <link href="lib/css/styles.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="lib/js/jquery.mmenu.min.all.js"></script>
+    </head>
+    <body>
+        <div id="page" class="container-fluid"><!-- wrapper for mmenu -->
+            <div id="favs">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h2 class="h2">
+                            Mes favoris
+                        <span class="pull-right">
+                            <a href="#catalog" class="btn btn-link"><span class="fa fa-bars fa-2x" /><span class="sr-only">Ouvrir le catalogue</span></a>
+                        </span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <dl class="h4" style="padding:10px;  background-color: rgba(90,131,205,.2); border-radius: 3px;">
+                            <dt>Appli 1</dt>
+                            <dd class="small">Desc1</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl class="h4" style="padding:10px;  background-color: rgba(90,131,205,.2); border-radius: 3px;">
+                            <dt>Appli 2</dt>
+                            <dd class="small">Desc2</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl class="h4" style="padding:10px;  background-color: rgba(90,131,205,.2); border-radius: 3px;">
+                            <dt>Appli 3</dt>
+                            <dd class="small">Desc3</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl class="h4" style="padding:10px;  background-color: rgba(90,131,205,.2); border-radius: 3px;">
+                            <dt>Appli 4</dt>
+                            <dd class="small">Desc4</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl class="h4" style="padding:10px;  background-color: rgba(90,131,205,.2); border-radius: 3px;">
+                            <dt>Appli 5</dt>
+                            <dd class="small">Desc5</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl class="h4" style="padding:10px;  background-color: rgba(90,131,205,.2); border-radius: 3px;">
+                            <dt>Appli 6</dt>
+                            <dd class="small">Desc6</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div id="catalog">
+                <div>
+                    <ul>
+                        <li><a href="#" class="domain">Environnement de travail</a></li>
+                        <li><a href="#" class="domain">Outils de communication</a></li>
+                        <li>
+                            <a href="#" class="domain">Applications métier</a>
+                            <ul>
+                                <li><a href="#" class="domain">Pilotage</a></li>
+                                <li><a href="#" class="domain">Gestion Ressources Humaines</a></li>
+                                <li><a href="#" class="domain">Gestion des enseignements et étudiants</a></li>
+                                <li>
+                                    <a href="#" class="domain">Gestion financière et comptable</a>
+                                    <ul>
+                                        <li><a href="#" class="domain">Sous domaine 1</a></li>
+                                        <li><a href="#" class="domain">Sous domaine 2</a></li>
+                                        <li class="mm-label">Applications</li>
+                                        <li><a href="#">Clients légers - Sifac production : mandant 500</a></li>
+                                        <li><a href="#">Clients légers - Sifac test : mandant 310</a></li>
+                                        <li><a href="#">Documentations et procédures Sifac</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#" class="domain">Gestion patrimoine</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!--<div id="header" class="mm-fixed-top">Welcome</div>-->
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function() {
+                $("#catalog").mmenu({
+//                    classes: "mm-fullscreen",
+                    classes: "mm-light",
+                    position: "right",
+                    counters: true,
+                    searchfield: {
+                        add: true,
+                        search: true,
+                        placeholder: 'Rechercher',
+                        noResults: 'Aucun résultat'
+                    },
+                    moveBackground: true,
+                    labels: {
+                        fixed: true
+                    },
+                    header: {
+                        add: true,
+                        update: true,
+                        title: 'Catalogue des applications'
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
