@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.esupportail.catapp.model.Application;
 import org.esupportail.catapp.model.Domaine;
+import org.esupportail.catapp.model.DomainesTree;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -55,7 +56,8 @@ public class CatAppServImpl implements ICatAppServ {
 	@Override
 	public List<Application> getApplications(String user) throws InterruptedException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		WebTarget applications = createWebTarget(wsAppPath + wsUserPath + user);
+		WebTarget applications = createWebTarget(wsAppPath)
+                                .queryParam(wsUserPath, user);
 //		applications.request().get().getLinks().iterator().next().getRel();
         return mapper.readValue(applications.request().get(String.class), new TypeReference<List<Application>>() {
         });
@@ -79,7 +81,9 @@ public class CatAppServImpl implements ICatAppServ {
 
 	@Override
 	public List<Domaine> getDomaines(String domId, String user) throws InterruptedException, IOException {
-        WebTarget domaines = createWebTarget(wsDomainPath + domId + wsUserPath + user);
+        WebTarget domaines = createWebTarget(wsDomainPath)
+                            .path(domId)
+                            .queryParam(wsUserPath, user);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(domaines.request().get(String.class), new TypeReference<List<Domaine>>() {
         });
@@ -94,7 +98,20 @@ public class CatAppServImpl implements ICatAppServ {
                 throw new InterruptedException(e.getMessage());
             }
         }
+
+    @Override
+    public DomainesTree getDomainesTree(String domId, String user) throws InterruptedException, MalformedURLException {
+        try {
+            WebTarget domainesTree = createWebTarget(wsDomainPath);
+            return domainesTree.path(domId)
+                    .path("/tree")
+                    .queryParam(wsUserPath, user)
+                    .request().get(DomainesTree.class);
+        } catch (ProcessingException | WebApplicationException e) {
+            throw new InterruptedException(e.getMessage());
+        }
     }
+}
 
 //    @JsonAutoDetect(fieldVisibility= JsonAutoDetect.Visibility.ANY)
 //    @JsonIgnoreProperties(ignoreUnknown = true)

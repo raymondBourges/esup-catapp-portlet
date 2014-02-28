@@ -2,23 +2,22 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.jasig.org/uportal/web/skin https://source.jasig.org/schemas/resource-server/skin-configuration/skin-configuration-v1.2.xsd">
 
-	<css>rs/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css</css>
-<!-- 	<css included="plain">/rs/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css</css> -->
-<!-- 	<css included="aggregated">/rs/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css</css> -->
 	<!--<css>rs/css/bootstrap.dev.3.0.1.modified.v4.css</css>-->
-	<css>rs/css/jquery.mmenu.all.css</css>
-	<css>rs/css/styles.css</css>
-    <css>http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css</css>
-    <css>rs/css/bootstrap.min.css</css>
-    <!--<css>rs/css/bootstrap-theme.min.css</css>-->
+    <css>rs/bootstrap-modified/css/bootstrap.dev.3.0.1.modified.v4.css</css>
+    <!--<css>rs/bootstrap/css/bootstrap-theme.css</css>-->
 
-<!-- 	<js included="plain" resource="true">/rs/jquery/1.9.1/jquery-1.9.1.js</js> -->
-<!-- 	<js included="aggregated" resource="true">/rs/jquery/1.9.1/jquery-1.9.1.min.js</js> -->
-	<js>rs/jquery/1.9.1/jquery-1.9.1.js</js>
-	<js>rs/js/angular.js</js>
-	<!--<js>rs/js/portlet-size.js</js>-->
-	<js>rs/js/catapp-portlet.js</js>
-	<js>rs/js/jquery.mmenu.min.all.js</js>
-    <js>rs/js/bootstrap.min.js</js>
+    <css>rs/jqueryui/1.10.4/theme/redmond/jquery-ui-1.10.4.redmond.css</css>
+    <css>rs/jqueryui/1.10.4/theme/redmond/jquery-ui-1.10.4.redmond.min.css</css>
+
+ 	<js included="plain" resource="true">/rs/jquery/1.9.1/jquery-1.9.1.js</js>
+ 	<js included="aggregated" resource="true">/rs/jquery/1.9.1/jquery-1.9.1.min.js</js>
+
+    <js included="plain" resource="true">rs/jqueryui/1.10.4/jquery-ui-1.10.4.custom.js</js>
+    <js included="aggregated" resource="true">rs/jqueryui/1.10.4/jquery-ui-1.10.4.custom.min.js</js>
+	<!--<js>rs/jquery/1.9.1/jquery-1.9.1.js</js>-->
+	<js>rs/angular/js/angular.js</js>
+	<js>rs/bootstrap-modified/js/portlet-size.js</js>
+	<js>rs/catApp-portlet/js/catapp-portlet.js</js>
+    <js>rs/ui-bootstrap/js/ui-bootstrap-tpls-0.10.0.js</js>
 	
 </resources>

@@ -15,6 +15,7 @@ import org.esupportail.catapp.domain.service.ICatAppServ;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.esupportail.catapp.model.DomainesTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -89,57 +90,68 @@ public class CatalogueController {
 		String userId = request.getRemoteUser();
         PortletPreferences prefs = request.getPreferences();
         String[] favoris = prefs.getValues("favoris", null);
-        List<String> removedApp = new ArrayList<String>();
         List<Application> appsUser = catalogueService.getApplications(userId);
         List<Application> foundFav = new ArrayList<Application>();
-        List<Application> lostFav = new ArrayList<Application>();
-        ArrayList<String> removedFav = new ArrayList<String>();
+        List<Application> noAccessFav = new ArrayList<Application>();
+        ArrayList<String> keepedFav = new ArrayList<String>();
         MappingJackson2JsonView view = new MappingJackson2JsonView();
         for (String favori : favoris) {
             for(Application app : appsUser) {
                 if(app.getCode().equals(favori)) {
                     foundFav.add(app);
                     find = true;
+                    keepedFav.add(favori);
                     break;
                 }
             }
             if(!find) {
-                Application rmvApp = catalogueService.getApplication(favori, userId);
-                if(rmvApp != null) {
-                    lostFav.add(rmvApp);
-                } else {
-                    removedFav.add(favori);
+                Application noAccessApp = catalogueService.getApplication(favori, userId);
+                if(noAccessApp != null) {
+                    noAccessFav.add(noAccessApp);
+                    keepedFav.add(favori);
                 }
             }
             find = false;
         }
         try {
-            String[] newFav = new String[removedFav.size()];
-            prefs.setValues("favoris", removedFav.toArray(newFav));
+            String[] newFav = new String[keepedFav.size()];
+            prefs.setValues("favoris", keepedFav.toArray(newFav));
         } catch (ReadOnlyException e) {
             LOG.debug(e.getMessage());
         }
         view.addStaticAttribute("apps", foundFav);
-        view.addStaticAttribute("removedApps", lostFav);
+        view.addStaticAttribute("noAccessApps", noAccessFav);
         return view;
 	}
 
+//    @ResourceMapping(value = "doms")
+//    public View getDomaines(ResourceRequest request) throws IOException, InterruptedException {
+//		String userId = request.getRemoteUser();
+//        PortletPreferences prefs = request.getPreferences();
+//        String idDomain = prefs.getValue("idDomain", null).trim();
+//        MappingJackson2JsonView view = new MappingJackson2JsonView();
+//        List<Domaine> result = catalogueService.getDomaines(idDomain, userId);
+//        view.addStaticAttribute("doms", result);
+//        return view;
+//    }
+
     @ResourceMapping(value = "doms")
     public View getDomaines(ResourceRequest request) throws IOException, InterruptedException {
-		String userId = request.getRemoteUser();
+        String userId = request.getRemoteUser();
         PortletPreferences prefs = request.getPreferences();
         String idDomain = prefs.getValue("idDomain", null).trim();
         MappingJackson2JsonView view = new MappingJackson2JsonView();
-        List<Domaine> result = catalogueService.getDomaines(idDomain, userId);
+        DomainesTree result = catalogueService.getDomainesTree(idDomain, userId);
         view.addStaticAttribute("doms", result);
         return view;
     }
 
-    @ActionMapping(params="action=deleteFavori")
-    public void deleteFavorite(ResourceRequest request, @RequestParam("p1") final String query) {
+    @ResourceMapping(value = "deleteFavori")
+    public View deleteFavorite(ResourceRequest request, @RequestParam("p1") final String query) {
         PortletPreferences prefs = request.getPreferences();
         String[] favoris = prefs.getValues("favoris", null);
         ArrayList<String> holdedFav = new ArrayList<String>();
+        String message;
         for (String favori : favoris) {
             if(!favori.equals(query)) {
                 holdedFav.add(favori);
@@ -148,13 +160,18 @@ public class CatalogueController {
         String[] newFav = new String[holdedFav.size()];
         try {
             prefs.setValues("favoris", holdedFav.toArray(newFav));
+            message = "L'application "+query+" est supprimée des favoris";;
         } catch (ReadOnlyException e) {
             LOG.debug("La propriété 'favoris' n'est pas modifiable");
+            message = "L'application "+query+" n'a pas pu être supprimée";
         }
+        MappingJackson2JsonView view = new MappingJackson2JsonView();
+        view.addStaticAttribute("message", message);
+        return view;
     }
 
-    public static final class ResourceUrlW {
-        private final ResourceURL resourceUrl;
+    static final class ResourceUrlW {
+        final ResourceURL resourceUrl;
         ResourceUrlW withResId(String resId) {
             resourceUrl.setResourceID(resId);
             return this;

@@ -27,12 +27,13 @@
 			<preference>
 				<name>idDomain</name>
 				<value></value>
+                <read-only>true</read-only>
 			</preference>
             <preference>
                 <name>favoris</name>
-                <value>SIFAC-P04</value>
+                <value>SIFAC-C0</value>
                 <value>SIFAC-DOC</value>
-                <value>SIFAC-GEST</value>
+                <value>SIFAC-PL</value>
                 <value>TOTO</value>
             </preference>
 		</portlet-preferences>

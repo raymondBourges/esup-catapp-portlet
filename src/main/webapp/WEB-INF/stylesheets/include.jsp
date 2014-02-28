@@ -9,5 +9,5 @@ taglib prefix="rs" uri="http://www.jasig.org/resource-server" %>
 		angular.bootstrap(angular.element(document.getElementById("catAppAdmin-<portlet:namespace/>")), ["<portlet:namespace/>"]);
       });
     </script>
-	<div id="catAppAdmin-<portlet:namespace/>" ng-view>
+	<div id="catAppAdmin-<portlet:namespace/>" ng-view class="portlet-container">
 		<portlet:defineObjects />
