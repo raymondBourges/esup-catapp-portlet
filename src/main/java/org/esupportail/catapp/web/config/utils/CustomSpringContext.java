@@ -15,14 +15,17 @@ public final class CustomSpringContext extends AnnotationConfigWebApplicationCon
 
     { scan("org.esupportail.catapp.web.config.mvc"); }
 
+    @Override
     public void setPortletContext(PortletContext portletContext) {
         this.portletContext = portletContext;
     }
 
+    @Override
     public PortletContext getPortletContext() {
         return portletContext;
     }
 
+    @Override
     public void setPortletConfig(PortletConfig portletConfig) {
         this.portletConfig = portletConfig;
     }

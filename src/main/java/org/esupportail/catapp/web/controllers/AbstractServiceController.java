@@ -84,28 +84,4 @@ public abstract class AbstractServiceController implements MessageSourceAware{
     	return "";
 	}
 	
-//	protected NuxeoResource getNuxeoResourceFromPortletSession(PortletRequest request){
-//		NuxeoResource nuxeoResource = (NuxeoResource) request.getPortletSession().getAttribute("nuxeoResource");
-//		if(nuxeoResource == null){
-//			nuxeoResource = new NuxeoResource();
-//			request.getPortletSession().setAttribute("nuxeoResource", nuxeoResource);
-//			sessionRegistry.registerNewSession(request.getPortletSession().getId(), nuxeoResource);
-//		}
-//		return nuxeoResource;
-//	}
-//	
-//	protected void makeNuxeoSession(PortletRequest request,NuxeoResource nuxeoResource) throws Exception{
-//		PortletPreferences prefs = request.getPreferences();
-//		String nuxeoHost = prefs.getValue(NUXEO_HOST, "");
-//		String nuxeoSecret = prefs.getValue(NUXEO_SECRET, "");
-//		String uid;
-//		try {
-//			uid = authenticator.getUser().getLogin();
-//		} catch (Exception e) {
-//			// local test mode with pluto plugin.
-//			uid = "Administrator";
-//		}
-//		nuxeoResource.makeSession(nuxeoHost, uid, nuxeoSecret);
-//	}
-	
 }

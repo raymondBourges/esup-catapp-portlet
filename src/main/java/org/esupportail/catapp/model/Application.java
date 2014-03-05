@@ -17,23 +17,23 @@ public class Application implements Serializable {
 
     private String code;
     private String title;
-    private String wording;
+    private String caption;
     private String description;
     private String url;
     private String group;
-    private Boolean accessibility;
-    private List<String> domaines;
+    private Boolean activation;
+    private List<String> domains;
 
-    public Application(final String code, final String title, final String wording, final String description,
-                       final String url, final String group, final boolean accessibility, final String... domaines) {
+    public Application(final String code, final String title, final String caption, final String description,
+                       final String url, final String group, final boolean activation, final String... domains) {
         this.code = code;
         this.title = title;
-        this.wording = wording;
+        this.caption = caption;
         this.description = description;
         this.url = url;
         this.group = group;
-        this.accessibility = accessibility;
-        this.domaines = asList(domaines);
+        this.activation = activation;
+        this.domains = asList(domains);
     }
 
 
@@ -41,13 +41,13 @@ public class Application implements Serializable {
     @JsonCreator
     public static Application application(@JsonProperty("code") final String code,
                                                 @JsonProperty("title") final String title,
-                                                @JsonProperty("wording") final String wording,
+                                                @JsonProperty("caption") final String caption,
                                                 @JsonProperty("description") final String description,
                                                 @JsonProperty("url") final String url,
                                                 @JsonProperty("group") final String group,
-                                                @JsonProperty("accessibility") final boolean accessibility,
-                                                @JsonProperty("domaines") final String... domaines) {
-        return new Application(code, title, wording, description, url, group, accessibility, domaines);
+                                                @JsonProperty("activation") final boolean activation,
+                                                @JsonProperty("domains") final String... domains) {
+        return new Application(code, title, caption, description, url, group, activation, domains);
     }
 
     public String getCode() {
@@ -58,8 +58,8 @@ public class Application implements Serializable {
         return title;
     }
 
-    public String getWording() {
-        return wording;
+    public String getCaption() {
+        return caption;
     }
 
     public String getDescription() {
@@ -74,12 +74,12 @@ public class Application implements Serializable {
         return group;
     }
 
-    public Boolean getAccessibility() {
-        return accessibility;
+    public Boolean getActivation() {
+        return activation;
     }
 
-    public List<String> getDomaines() {
-        return Collections.unmodifiableList(domaines);
+    public List<String> getDomains() {
+        return Collections.unmodifiableList(domains);
     }
 
     public Application setCode(final String code) {
@@ -92,8 +92,8 @@ public class Application implements Serializable {
         return this;
     }
 
-    public Application setWording(final String wording) {
-        this.wording = wording;
+    public Application setCaption(final String caption) {
+        this.caption = caption;
         return this;
     }
 
@@ -112,13 +112,13 @@ public class Application implements Serializable {
         return this;
     }
 
-    public Application setAccessibility(Boolean accessibility) {
-        this.accessibility = accessibility;
+    public Application setActivation(Boolean activation) {
+        this.activation = activation;
         return this;
     }
 
-    public Application setDomaines(String... domaines) {
-        this.domaines = asList(domaines);
+    public Application setDomains(String... domains) {
+        this.domains = asList(domains);
         return this;
     }
 }

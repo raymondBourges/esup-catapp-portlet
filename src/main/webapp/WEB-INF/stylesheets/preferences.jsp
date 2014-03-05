@@ -5,7 +5,7 @@
 </portlet:actionURL>
 
 <form action="${actionUrl}" method="post" name="<portlet:namespace />fm">
-	Identifiant du domaine racine: <input size="40"
+	Identifiant du domain racine: <input size="40"
 		type="text" value="<%=renderRequest.getAttribute("idDomain") %>"
 	name="idDomain"><br />
 	<br /> <input type="submit">

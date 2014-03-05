@@ -8,6 +8,7 @@
 		<portlet-name>esup-catapp-portlet</portlet-name>
 		<display-name>esup-catapp-portlet</display-name>
 		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+
 		<init-param>
 			<name>contextClass</name>
 			<value>org.esupportail.catapp.web.config.utils.CustomSpringContext</value>
@@ -15,8 +16,6 @@
 		<expiration-cache>0</expiration-cache>
 		<supports>
 			<mime-type>text/html</mime-type>
-            <portlet-mode>VIEW</portlet-mode>
-            <portlet-mode>EDIT</portlet-mode>
 		</supports>
 		<portlet-info>
 			<title>esup-catapp-portlet</title>

@@ -3,8 +3,8 @@ package org.esupportail.catapp.domain.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.esupportail.catapp.model.Application;
-import org.esupportail.catapp.model.Domaine;
-import org.esupportail.catapp.model.DomainesTree;
+import org.esupportail.catapp.model.Domain;
+import org.esupportail.catapp.model.DomainsTree;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -48,8 +48,8 @@ public class CatAppServImpl implements ICatAppServ {
 		ClientConfig config = new ClientConfig()
 				.connectorProvider(new ApacheConnectorProvider());
 		Client client = ClientBuilder.newClient(config);
-		WebTarget domainesClient = client.target(wsCatAppServiceURL);
-		WebTarget responseWebTarget = domainesClient.path(path);
+		WebTarget domainsClient = client.target(wsCatAppServiceURL);
+		WebTarget responseWebTarget = domainsClient.path(path);
 		return responseWebTarget;
 	}
 
@@ -74,39 +74,39 @@ public class CatAppServImpl implements ICatAppServ {
     }
 
     //	@Override
-//	public Response getDomaines() throws MalformedURLException {
-//		WebTarget domaines = createWebTarget("domaines");
-//		return domaines.request().get();
+//	public Response getDomains() throws MalformedURLException {
+//		WebTarget domains = createWebTarget("domains");
+//		return domains.request().get();
 //	}
 
 	@Override
-	public List<Domaine> getDomaines(String domId, String user) throws InterruptedException, IOException {
-        WebTarget domaines = createWebTarget(wsDomainPath)
+	public List<Domain> getDomains(String domId, String user) throws InterruptedException, IOException {
+        WebTarget domains = createWebTarget(wsDomainPath)
                             .path(domId)
                             .queryParam(wsUserPath, user);
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(domaines.request().get(String.class), new TypeReference<List<Domaine>>() {
+        return mapper.readValue(domains.request().get(String.class), new TypeReference<List<Domain>>() {
         });
 	}
 
     @Override
-    public Domaine getDomaine(String code, String user) throws InterruptedException, MalformedURLException {
+    public Domain getDomain(String code, String user) throws InterruptedException, MalformedURLException {
             try {
-                WebTarget domaine = createWebTarget(wsDomainPath);
-                return domaine.path(code).request().get(Domaine.class);
+                WebTarget domain = createWebTarget(wsDomainPath);
+                return domain.path(code).request().get(Domain.class);
             } catch (ProcessingException | WebApplicationException e) {
                 throw new InterruptedException(e.getMessage());
             }
         }
 
     @Override
-    public DomainesTree getDomainesTree(String domId, String user) throws InterruptedException, MalformedURLException {
+    public DomainsTree getDomainsTree(String domId, String user) throws InterruptedException, MalformedURLException {
         try {
-            WebTarget domainesTree = createWebTarget(wsDomainPath);
-            return domainesTree.path(domId)
+            WebTarget domainsTree = createWebTarget(wsDomainPath);
+            return domainsTree.path(domId)
                     .path("/tree")
                     .queryParam(wsUserPath, user)
-                    .request().get(DomainesTree.class);
+                    .request().get(DomainsTree.class);
         } catch (ProcessingException | WebApplicationException e) {
             throw new InterruptedException(e.getMessage());
         }
@@ -117,9 +117,9 @@ public class CatAppServImpl implements ICatAppServ {
 //    @JsonIgnoreProperties(ignoreUnknown = true)
 //    @Value
 //    static class DomainList {
-//        List<Domaine> result;
+//        List<Domain> result;
 //        @JsonCreator
-//        public static DomainList domainList(@JsonProperty("result") List<Domaine> result) {
+//        public static DomainList domainList(@JsonProperty("result") List<Domain> result) {
 //            return new DomainList(result);
 //        }
 //    }
@@ -129,21 +129,21 @@ public class CatAppServImpl implements ICatAppServ {
 //    @Value
 //    @FieldDefaults(makeFinal = true, level = AccessLevel.PUBLIC)
 //    @Wither
-//    static class Domaine {
+//    static class Domain {
 //        String code, parent, libelle;
 //        Date creation, maj;
 //        List<Application> applications;
-//        List<Domaine> domaines;
+//        List<Domain> domaines;
 //
 //        @SuppressWarnings("unchecked")
 //        @JsonCreator
-//        public static Domaine Domaine(Map<String, Object> delegate) {
-//            return new Domaine(
+//        public static Domain Domain(Map<String, Object> delegate) {
+//            return new Domain(
 //                    (String) delegate.get("code"),
 //                    (String) delegate.get("parent"),
 //                    (String) delegate.get("libelle"),
 //                    (List<Application>) delegate.get("applications"),
-//                    (List<Domaine>) delegate.get("domaines"),
+//                    (List<Domain>) delegate.get("domaines"),
 //                    (Date) delegate.get("creation"),
 //                    (Date) delegate.get("maj"));
 //        }

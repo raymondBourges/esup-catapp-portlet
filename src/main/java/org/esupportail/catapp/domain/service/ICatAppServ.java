@@ -5,13 +5,9 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import org.esupportail.catapp.model.Application;
-import org.esupportail.catapp.model.Domaine;
+import org.esupportail.catapp.model.Domain;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import org.esupportail.catapp.model.DomainesTree;
-
-import javax.ws.rs.core.Response;
+import org.esupportail.catapp.model.DomainsTree;
 
 public interface ICatAppServ {
 
@@ -19,25 +15,25 @@ public interface ICatAppServ {
 //	 * @return La liste de tous les domaines
 //	 * @throws InterruptedException
 //	 */
-//	Response getDomaines() throws InterruptedException;
+//	Response getDomains() throws InterruptedException;
 
 	/**
 	 * @return Le domaine
 	 * @throws InterruptedException
 	 */
-	List<Domaine> getDomaines(String domId, String user) throws InterruptedException, IOException;
+	List<Domain> getDomains(String domId, String user) throws InterruptedException, IOException;
 
     /**
      * @return Le domaine correspondant au code
      * @throws InterruptedException
      */
-    Domaine getDomaine(String code, String user) throws InterruptedException, MalformedURLException;
+    Domain getDomain(String code, String user) throws InterruptedException, MalformedURLException;
 
     /**
      * @return L'arbre des domaines dont la racine correspond au code
      * @throws InterruptedException
      */
-    DomainesTree getDomainesTree(String domId, String user) throws InterruptedException, MalformedURLException;
+    DomainsTree getDomainsTree(String domId, String user) throws InterruptedException, MalformedURLException;
 
 	/**
 	 * @return La liste de toutes les applications

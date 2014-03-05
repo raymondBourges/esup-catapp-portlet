@@ -3,33 +3,26 @@ package org.esupportail.catapp.web.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.esupportail.catapp.model.Application;
-import org.esupportail.catapp.model.Domaine;
 import org.esupportail.catapp.domain.service.ICatAppServ;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.esupportail.catapp.model.DomainesTree;
+import org.esupportail.catapp.model.DomainsTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.ModelAndView;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.springframework.web.portlet.mvc.AbstractController;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 import static org.esupportail.catapp.web.controllers.CatalogueController.ResourceUrlW.wrap;
 
@@ -84,6 +77,7 @@ public class CatalogueController {
         return "catalogue";
     }
 
+
     @ResourceMapping(value = "apps")
 	public View getApplications(ResourceRequest request) throws IOException, InterruptedException {
         Boolean find = false;
@@ -130,18 +124,18 @@ public class CatalogueController {
 //        PortletPreferences prefs = request.getPreferences();
 //        String idDomain = prefs.getValue("idDomain", null).trim();
 //        MappingJackson2JsonView view = new MappingJackson2JsonView();
-//        List<Domaine> result = catalogueService.getDomaines(idDomain, userId);
+//        List<Domain> result = catalogueService.getDomaines(idDomain, userId);
 //        view.addStaticAttribute("doms", result);
 //        return view;
 //    }
 
     @ResourceMapping(value = "doms")
-    public View getDomaines(ResourceRequest request) throws IOException, InterruptedException {
+    public View getDomains(ResourceRequest request) throws IOException, InterruptedException {
         String userId = request.getRemoteUser();
         PortletPreferences prefs = request.getPreferences();
         String idDomain = prefs.getValue("idDomain", null).trim();
         MappingJackson2JsonView view = new MappingJackson2JsonView();
-        DomainesTree result = catalogueService.getDomainesTree(idDomain, userId);
+        DomainsTree result = catalogueService.getDomainsTree(idDomain, userId);
         view.addStaticAttribute("doms", result);
         return view;
     }
@@ -170,8 +164,8 @@ public class CatalogueController {
         return view;
     }
 
-    static final class ResourceUrlW {
-        final ResourceURL resourceUrl;
+    public static final class ResourceUrlW {
+        private final ResourceURL resourceUrl;
         ResourceUrlW withResId(String resId) {
             resourceUrl.setResourceID(resId);
             return this;
