@@ -81,7 +81,8 @@ public class CatalogueController {
     @ResourceMapping(value = "apps")
 	public View getApplications(ResourceRequest request) throws IOException, InterruptedException {
         Boolean find = false;
-		String userId = request.getRemoteUser();
+//		String userId = request.getRemoteUser();
+        String userId = "nhenry";
         PortletPreferences prefs = request.getPreferences();
         String[] favoris = prefs.getValues("favoris", null);
         List<Application> appsUser = catalogueService.getApplications(userId);
@@ -99,7 +100,7 @@ public class CatalogueController {
                 }
             }
             if(!find) {
-                Application noAccessApp = catalogueService.getApplication(favori, userId);
+                Application noAccessApp = catalogueService.getApplication(favori);
                 if(noAccessApp != null) {
                     noAccessFav.add(noAccessApp);
                     keepedFav.add(favori);
@@ -118,20 +119,26 @@ public class CatalogueController {
         return view;
 	}
 
-//    @ResourceMapping(value = "doms")
-//    public View getDomaines(ResourceRequest request) throws IOException, InterruptedException {
-//		String userId = request.getRemoteUser();
-//        PortletPreferences prefs = request.getPreferences();
-//        String idDomain = prefs.getValue("idDomain", null).trim();
-//        MappingJackson2JsonView view = new MappingJackson2JsonView();
-//        List<Domain> result = catalogueService.getDomaines(idDomain, userId);
-//        view.addStaticAttribute("doms", result);
-//        return view;
-//    }
+
+    @ResourceMapping(value = "getAppsByDom")
+    public View getAppsByDom(ResourceRequest request, @RequestParam("p1") final String query) throws IOException, InterruptedException {
+        String[] apps = query.split(",");
+        List<Application> appsByDom = new ArrayList<Application>();
+        for (int i = 0; i < apps.length; i++) {
+            Application app = catalogueService.getApplication(apps[i]);
+            if(app != null) {
+                appsByDom.add(app);
+            }
+        }
+        MappingJackson2JsonView view = new MappingJackson2JsonView();
+        view.addStaticAttribute("appsByDom", appsByDom);
+        return view;
+    }
 
     @ResourceMapping(value = "doms")
     public View getDomains(ResourceRequest request) throws IOException, InterruptedException {
-        String userId = request.getRemoteUser();
+//        String userId = request.getRemoteUser();
+        String userId = "nhenry";
         PortletPreferences prefs = request.getPreferences();
         String idDomain = prefs.getValue("idDomain", null).trim();
         MappingJackson2JsonView view = new MappingJackson2JsonView();

@@ -19,14 +19,14 @@
             list-style-type: none;
             margin: 0;
             padding: 0;
-            width: 60%;
+            width: 80%;
         }
 
         #sortable li {
             margin: 0 3px 3px 3px;
             padding: 0.4em;
             padding-left: 1.5em;
-            font-size: 1.4em;
+            font-size: 1em;
             height: 18px;
         }
 
@@ -42,7 +42,7 @@
                     padding: 10px;
                     width: 300px;
                     font-weight: bold;
-                    font-size: 0.5em;
+                    font-size: 0.8em;
                     color: #ffffff;
                     background-color: #2e6e9e;
 
@@ -55,38 +55,6 @@
             $("#sortable").sortable();
             $("#sortable").disableSelection();
         });
-
-//        $(document).ready(function () {
-//
-//            $('.dropdown-toggle').click(function(){
-//                $(this).next('.dropdown').fadeToggle("slow");
-//            });
-//
-//            $(document).click(function(e) {
-//                var target = e.target;
-//                if (!$(target).is('.dropdown-toggle') && !$(target).parents().is('.dropdown-toggle')) {
-//                    $('.dropdown').hide();
-//                }
-//            });
-//        });
-        //<![CDATA[
-
-//                $("#select").click(function () {
-//                    alert(toto);
-//                    $(".dropdown").fadeOut("slow");
-//                    $(this).next('.dropdown').fadeToggle("slow");
-//                });
-//                $('.dropdown-toggle').click(function(){
-//                    $(this).next('.dropdown').toggle();
-//                });
-//
-//                $(document).click(function(e) {
-//                    var target = e.target;
-//                    if (!$(target).is('.dropdown-toggle') && !$(target).parents().is('.dropdown-toggle')) {
-//                        $('.dropdown').hide();
-//                    }
-//                });
-
     </script>
     <div class="container demo-3">
         <div ng-controller="AppList2Ctrl">
@@ -110,7 +78,7 @@
                         <li ng-repeat="application in applications  | filter:searchText" class="ui-state-default">
                             <div ng-switch="{{application.state}}">
                                 <div ng-switch-when="true">
-                                    <a class="deactivated">{{application.caption}}</a>
+                                    <a class="'deactivated'">{{application.caption}}</a>
                                     <div class="dropdown">
                                         <span>Vous n'avez pas les droits suffisants pour accéder à cette application</span>
                                         <p>
@@ -120,8 +88,8 @@
                                     </div>
                                 </div>
                                 <div ng-switch-when="false">
-                                    <div ng-switch="{{application.acces}}">
-                                        <div ng-switch-when="true">
+                                    <div ng-switch="application.acces">
+                                        <div ng-switch-when="Activated">
                                             <a>{{application.caption}}</a>
                                             <div class="dropdown">
                                                 <span>{{application.description}}</span>
@@ -133,7 +101,7 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <div ng-switch-when="false">
+                                        <div ng-switch-when="Deactivated">
                                             <a class="deactivated">{{application.caption}}</a>
                                             <div class="dropdown">
                                                 <alert>L'application est provisoirement indisponible</alert>
@@ -170,12 +138,11 @@
                 <%--</ul>--%>
                 <%--</ng-switch>--%>
                 <%--</script>--%>
-
                 <div class="sidebar">
                     <ul>
                         <li>
-                            <a href="javascript:void(0)">{{tasks.domain.caption}}</a>
-                            <collection collection='tasks.subDomains'></collection>
+                            <a href="javascript:void(0)">{{domaines.domain.caption}}</a>
+                            <collection collection='domaines.subDomains'></collection>
                             <%--<ul class="sub-menu">--%>
                             <%--<li ng-repeat="domain in tasks.subDomains" ng-include="'menu_renderer.html'"></li>--%>
                             <%--</ul>--%>
@@ -195,7 +162,6 @@
         htmlString += "});"
         htmlString += "$('#sortable li a').click(function(ev) {";
         htmlString += "$(this).next('.dropdown').fadeToggle('slow');";
-//        htmlString += "$('#sortable .dropdown').not($(this).parents('.dropdown')).slideUp();";
         htmlString += "});"
 
         htmlString += "});";

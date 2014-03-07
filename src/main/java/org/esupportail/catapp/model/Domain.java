@@ -10,8 +10,8 @@ import java.util.List;
 public class Domain {
 
 	private String code, caption, parent;
-    private List<Application> applications;
-    private List<Domain> domains;
+    private List<String> applications;
+    private List<String> domains;
 
     public Domain(){
     }
@@ -48,13 +48,13 @@ public class Domain {
     /**
      	 * @return the applications
      	 */
-	public List<Application> getApplications() {
+	public List<String> getApplications() {
 		return applications;
 	}
 	/**
 	 * @return the domains
 	 */
-	public List<Domain> getDomains() {
+	public List<String> getDomains() {
 		return domains;
 	}
 	/**
@@ -78,13 +78,13 @@ public class Domain {
     /**
      * @param applications the applications to set
      */
-    public void setApplications(List<Application> applications) {
+    public void setApplications(List<String> applications) {
         this.applications = applications;
     }
     /**
      * @param domains the domains to set
      */
-    public void setDomains(List<Domain> domains) {
+    public void setDomains(List<String> domains) {
         this.domains = domains;
     }
 

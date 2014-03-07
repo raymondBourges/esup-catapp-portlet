@@ -21,11 +21,13 @@ public class Application implements Serializable {
     private String description;
     private String url;
     private String group;
-    private Boolean activation;
+    private Activation activation;
     private List<String> domains;
 
+    public static enum Activation { Activated, Deactivated }
+
     public Application(final String code, final String title, final String caption, final String description,
-                       final String url, final String group, final boolean activation, final String... domains) {
+                       final String url, final String group, final Activation activation, final String... domains) {
         this.code = code;
         this.title = title;
         this.caption = caption;
@@ -45,7 +47,7 @@ public class Application implements Serializable {
                                                 @JsonProperty("description") final String description,
                                                 @JsonProperty("url") final String url,
                                                 @JsonProperty("group") final String group,
-                                                @JsonProperty("activation") final boolean activation,
+                                                @JsonProperty("activation") final Activation activation,
                                                 @JsonProperty("domains") final String... domains) {
         return new Application(code, title, caption, description, url, group, activation, domains);
     }
@@ -74,7 +76,7 @@ public class Application implements Serializable {
         return group;
     }
 
-    public Boolean getActivation() {
+    public Activation getActivation() {
         return activation;
     }
 
@@ -112,7 +114,7 @@ public class Application implements Serializable {
         return this;
     }
 
-    public Application setActivation(Boolean activation) {
+    public Application setActivation(Activation activation) {
         this.activation = activation;
         return this;
     }

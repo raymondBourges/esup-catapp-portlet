@@ -40,22 +40,35 @@ catAppPortlet = function(appName, resourceURL) {
 
         $http
             .get(url(encodeResourceUrl(resourceURL), 'doms')).success(function (data) {
-                $scope.tasks = data.doms;
-//                $scope.domains = data.doms;
+                $scope.domaines = data.doms;
             });
 
 	});
 
+//    app.service('DomainesService', function ($scope, $http) {
+//
+//        this.getAppsByCode = function (code) {
+//
+//
+//            if (angular.isUndefined(code) || code == null) { return }
+//
+//            $http
+//                .get(url(encodeResourceUrl(resourceURL), 'getAppsByDom', code))
+//                .success(function (data) {
+//                    $scope.appsByDom = data;
+////                    return data;
+//                });
+//        }
+//    });
 
     app.service('FavorisService', function () {
 
         //favoris array to hold list of all favoris
-        var favoris = [{}];
+        var favoris = [];
 
         //save method create a new favori
         this.create = function (app, removed) {
             var favori = {"code" : app.code, "title" : app.title, "caption" : app.caption, "description" : app.description, "url" : app.url, "acces" : app.activation, "state" : removed};
-            alert("create  "+favori);
             favoris.push(favori);
         }
 
@@ -82,7 +95,6 @@ catAppPortlet = function(appName, resourceURL) {
 
         //simply returns the favoris list
         this.list = function () {
-            alert("list  "+favoris.length);
             return favoris;
         }
     });
@@ -122,7 +134,7 @@ catAppPortlet = function(appName, resourceURL) {
                         element.append("<collection collection='member.subDomains'></collection>");
                         $compile(element.contents())(scope)
                     }
-                    if (angular.isArray(scope.member.domain.applications)) {
+                    if ((scope.member.domain.applications > 0)) {
                         element.append("<collection2 collection='member.domain.applications'></collection2>");
                         $compile(element.contents())(scope)
                     }

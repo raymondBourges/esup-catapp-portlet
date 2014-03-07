@@ -25,15 +25,15 @@
 		<portlet-preferences>
 			<preference>
 				<name>idDomain</name>
-				<value></value>
+				<value>ROOT</value>
                 <read-only>true</read-only>
 			</preference>
             <preference>
                 <name>favoris</name>
-                <value>SIFAC-C0</value>
+                <value>SIFAC-GEST</value>
                 <value>SIFAC-DOC</value>
-                <value>SIFAC-PL</value>
-                <value>TOTO</value>
+                <value>SIFAC-CO</value>
+                <value>VIZELIA</value>
             </preference>
 		</portlet-preferences>
 		<security-role-ref>

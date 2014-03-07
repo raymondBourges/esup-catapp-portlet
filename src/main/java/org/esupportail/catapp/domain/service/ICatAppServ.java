@@ -45,5 +45,5 @@ public interface ICatAppServ {
      * @return L'application correspondant au code
      * @throws InterruptedException
      */
-    Application getApplication(String code, String user) throws InterruptedException, MalformedURLException;
+    Application getApplication(String code) throws InterruptedException, MalformedURLException;
 }

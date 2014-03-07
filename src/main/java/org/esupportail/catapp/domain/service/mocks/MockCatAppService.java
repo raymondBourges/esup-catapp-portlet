@@ -31,9 +31,9 @@ public class MockCatAppService implements ICatAppServ {
     }
 
     @Override
-    public Application getApplication(final String code, final String user) throws InterruptedException {
+    public Application getApplication(final String code) throws InterruptedException {
         Application result = null;
-        for(Application app : getApplications(user)) {
+        for(Application app : getApplications("nhenry")) {
             if(app.getCode().equals(code)) {
                 result = app;
                 break;

@@ -1,5 +1,6 @@
 package org.esupportail.catapp.config;
 
+import org.esupportail.catapp.domain.service.CatAppServImpl;
 import org.esupportail.catapp.domain.service.ICatAppServ;
 import org.esupportail.catapp.domain.service.mocks.MockCatAppService;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,12 +53,12 @@ public class AppContext {
        }};
     }
 
-    @Bean
-    public ICatAppServ catAppService() throws MalformedURLException {
-        return new MockCatAppService();
-    }
 //    @Bean
 //    public ICatAppServ catAppService() throws MalformedURLException {
-//        return CatAppServImpl.CatAppService(wsCatAppServiceURL, wsDomainPath, wsUserPath, wsAppPath);
+//        return new MockCatAppService();
 //    }
+    @Bean
+    public ICatAppServ catAppService() throws MalformedURLException {
+        return CatAppServImpl.CatAppService(wsCatAppServiceURL, wsDomainPath, wsUserPath, wsAppPath);
+    }
 }
