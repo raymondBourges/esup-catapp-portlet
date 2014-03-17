@@ -14,64 +14,38 @@
     </script>
 </head>
 <div id="catAppPortlet-<portlet:namespace/>" ng-view>
-    <style>
-        #sortable {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            width: 80%;
+    <script type="text/javascript">
+        var width = document.getElementById("catAppPortlet-<portlet:namespace/>").offsetWidth;
+
+        google_ad_client = "ca-pub-3827380040284749";
+
+        if (width > 800) {
+            // Load the Leaderboard 728x90 Unit for wide screen
+            google_ad_slot = "6954218739";
+            google_ad_width = 728;
+            google_ad_height = 90;
+        } else if ((width < 800) && (width > 400)) {
+            // Load the 336x280 Medium Rectangle
+            google_ad_slot = "8430951934";
+            google_ad_width = 336;
+            google_ad_height = 280;
+        } else {
+            // For small screens, load the 468x60 banner
+            google_ad_slot = "9907685131";
+            google_ad_width = 468;
+            google_ad_height = 60;
         }
-
-        #sortable li {
-            margin: 0 3px 3px 3px;
-            padding: 0.4em;
-            padding-left: 1.5em;
-            font-size: 1em;
-            height: 18px;
-        }
-
-        #sortable li span div {
-            position: absolute;
-            margin-left: -1.3em;
-        }
-
-
-        .dropdown { display: none;
-                    position: absolute;
-                    border:1px solid #ccc;
-                    padding: 10px;
-                    width: 300px;
-                    font-weight: bold;
-                    font-size: 0.8em;
-                    color: #ffffff;
-                    background-color: #2e6e9e;
-
-        }
-
-        .dropdown button { padding: .5em 1em; text-decoration: none; }
-    </style>
-    <script>
-        $(function () {
-            $("#sortable").sortable();
-            $("#sortable").disableSelection();
-        });
     </script>
-    <div class="container demo-3">
-        <div ng-controller="AppList2Ctrl">
+    <div ng-controller="AppList2Ctrl">
+        <div id="slider-1" class="liquid-slider">
             <div id="dropdown-Menu">
+                <span class="title">Favoris</span>
                 <div id="favs">
                     <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}
                     </alert>
                     <div class="row">
                         <div class="col-sm-12">
-                            <h2>Mes favoris</h2>
-                            <%--<span class="pull-right">--%>
-                            <%--&lt;%&ndash;<button class="dl-trigger">Open Menu</button>&ndash;%&gt;--%>
-                            <%--&lt;%&ndash;<a href="#catalog" class="btn btn-link"><span class="fa fa-bars fa-2x"/><span&ndash;%&gt;--%>
-                            <%--&lt;%&ndash;class="sr-only">Ouvrir le catalogue</span></a>&ndash;%&gt;--%>
-                            <%--</span>--%>
-
-                            Search: <input type="text" ng-model="searchText"/>
+                            Filtrer: <input type="text" ng-model="searchText"/>
                         </div>
                     </div>
                     <ul id="sortable">
@@ -120,67 +94,26 @@
                     </ul>
                 </div>
             </div>
-            <div>
+            <div id="catalogue" class="main clearfix">
+                <span class="title">Catalogue</span>
 
-                <%--<script type="text/ng-template" id="menu_renderer.html">--%>
-                <%--<a href="#">{{domain.domain.caption}}</a>--%>
-                <%--<ng-switch on="domain.domain.applications.length > 0">--%>
-                <%--<ul class="sub-menu" ng-switch-when="true">--%>
-                <%--<li ng-repeat="application in domain.domain.applications">--%>
-                <%--<a href="{{application.url}}">{{application.title}}</a>--%>
-                <%--</li>--%>
-                <%--</ul>--%>
-                <%--</ng-switch>--%>
+                <div class="column">
+                    <div class="sidebar">
+                        <ul>
+                            <li>
+                                <a href="javascript:void(0)">{{domaines.domain.caption}}</a>
+                                <collection collection='domaines.subDomains'></collection>
+                            </li>
 
-                <%--<ng-switch on="domain.subDomains.length > 0">--%>
-                <%--<ul class="sub-menu" ng-switch-when="true">--%>
-                <%--<li ng-repeat="domain in domain.subDomains" ng-include="'menu_renderer.html'"></li>--%>
-                <%--</ul>--%>
-                <%--</ng-switch>--%>
-                <%--</script>--%>
-                <div class="sidebar">
-                    <ul>
-                        <li>
-                            <a href="javascript:void(0)">{{domaines.domain.caption}}</a>
-                            <collection collection='domaines.subDomains'></collection>
-                            <%--<ul class="sub-menu">--%>
-                            <%--<li ng-repeat="domain in tasks.subDomains" ng-include="'menu_renderer.html'"></li>--%>
-                            <%--</ul>--%>
-                        </li>
-
-                    </ul>
+                        </ul>
+                    </div>
+                    <%--<div id="dl-menu" class="dl-menuwrapper">--%>
+                       <%--<collection collection='domaines.subDomains'></collection>--%>
+                    <%--</div>--%>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        var htmlString = "$(document).ready(function() {";
-        htmlString += "$('.sidebar ul li a').click(function(ev) {";
-        htmlString += "$('.sidebar .sub-menu').not($(this).parents('.sub-menu')).slideUp();";
-        htmlString += "$(this).next('.sub-menu').slideToggle();";
-        htmlString += "ev.stopPropagation();";
-        htmlString += "});"
-        htmlString += "$('#sortable li a').click(function(ev) {";
-        htmlString += "$(this).next('.dropdown').fadeToggle('slow');";
-        htmlString += "});"
-
-        htmlString += "});";
-
-        function launchJs() {
-            var menu = document.createElement('script');
-            menu.type = 'text/javascript';
-            menu.innerHTML = htmlString;
-            document.getElementById('dropdown-Menu').appendChild(menu);
-        }
-    </script>
-    <script>
-        setTimeout("launchJs();", 500)
-    </script>
-    <style>
-        .sidebar ul ul {
-            display: none;
-        }
-    </style>
-
 </div>
+<rs:aggregatedResources path="/footerResources.xml"/>
 </html>

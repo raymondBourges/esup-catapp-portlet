@@ -81,8 +81,7 @@ public class CatalogueController {
     @ResourceMapping(value = "apps")
 	public View getApplications(ResourceRequest request) throws IOException, InterruptedException {
         Boolean find = false;
-//		String userId = request.getRemoteUser();
-        String userId = "nhenry";
+		String userId = request.getRemoteUser();
         PortletPreferences prefs = request.getPreferences();
         String[] favoris = prefs.getValues("favoris", null);
         List<Application> appsUser = catalogueService.getApplications(userId);
@@ -165,6 +164,29 @@ public class CatalogueController {
         } catch (ReadOnlyException e) {
             LOG.debug("La propriété 'favoris' n'est pas modifiable");
             message = "L'application "+query+" n'a pas pu être supprimée";
+        }
+        MappingJackson2JsonView view = new MappingJackson2JsonView();
+        view.addStaticAttribute("message", message);
+        return view;
+    }
+
+    @ResourceMapping(value = "addFavori")
+    public View addFavorite(ResourceRequest request, @RequestParam("p1") final String query) {
+        PortletPreferences prefs = request.getPreferences();
+        String[] favoris = prefs.getValues("favoris", null);
+        ArrayList<String> holdedFav = new ArrayList<String>();
+        String message;
+        for (String favori : favoris) {
+            holdedFav.add(favori);
+        }
+        holdedFav.add(query);
+        String[] newFav = new String[holdedFav.size()];
+        try {
+            prefs.setValues("favoris", holdedFav.toArray(newFav));
+            message = "L'application "+query+" a été ajouter aux favoris";;
+        } catch (ReadOnlyException e) {
+            LOG.debug("La propriété 'favoris' n'est pas modifiable");
+            message = "L'application "+query+" n'a pas pu être ajoutée";
         }
         MappingJackson2JsonView view = new MappingJackson2JsonView();
         view.addStaticAttribute("message", message);

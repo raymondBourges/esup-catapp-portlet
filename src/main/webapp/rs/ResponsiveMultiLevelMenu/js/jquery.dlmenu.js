@@ -13,7 +13,7 @@
 	'use strict';
 
 	// global
-	var Modernizr = window.Modernizr, $body = $( 'body' );
+	var Modernizr = window.Modernizr, $body = $( '#catalogue' );
 
 	$.DLMenu = function( options, element ) {
 		this.$el = $( element );
@@ -77,7 +77,6 @@
 			var self = this;
 
 			this.$trigger.on( 'click.dlmenu', function() {
-
 				if( self.open ) {
 					self._closeMenu();
 				} 
@@ -89,7 +88,7 @@
 			} );
 
 			this.$menuitems.on( 'click.dlmenu', function( event ) {
-				
+
 				event.stopPropagation();
 
 				var $item = $(this),
@@ -219,7 +218,6 @@
 	};
 
 	$.fn.dlmenu = function( options ) {
-
 		if ( typeof options === 'string' ) {
 			var args = Array.prototype.slice.call( arguments, 1 );
 			this.each(function() {
