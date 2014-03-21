@@ -6,7 +6,7 @@
 	<artifactId>esup-catapp-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>esup-catapp-portlet</name>
-	<version>0.1.0</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<description>Catalogue des applications - Portlet</description>
 	<repositories>
 		<repository>
