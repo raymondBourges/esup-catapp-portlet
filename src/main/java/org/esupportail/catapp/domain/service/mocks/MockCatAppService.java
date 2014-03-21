@@ -20,7 +20,7 @@ public class MockCatAppService implements ICatAppServ {
 
     private static String jsonDomTree = "{ \"domain\" : { \"code\": \"ROOT\", \"caption\": \"Domain racine\", \"parent\": null, \"applications\": [], \"domains\" : [\"ENV-TRAVAIL\",\"OUTILS-COM\",\"APPS-METIER\",\"GFC\",\"GP\"] }, \"subDomains\": [ {  \"domain\" : {  \"code\": \"ENV-TRAVAIL\",  \"caption\": \"Environnement de travail\",  \"parent\": \"ROOT\",  \"applications\": []  },  \"subDomains\": [] }, {  \"domain\" : {  \"code\": \"OUTILS-COM\",  \"caption\": \"Outils de communication\",  \"parent\": \"ROOT\",  \"applications\": []  },  \"subDomains\": [] }, {  \"domain\" : {  \"code\": \"APPS-METIER\",  \"caption\": \"Applications métier\",  \"parent\": \"ROOT\",  \"applications\": [],  \"domains\": [\"PILOTAGE\",\"GRH\",\"GEE\"]  },  \"subDomains\": [  {   \"domain\" : {   \"code\": \"PILOTAGE\",   \"caption\": \"Pilotage\",   \"parent\": \"APPS-METIER\",   \"applications\": []   },   \"subDomains\": []  },  {   \"domain\" : {   \"code\": \"GRH\",   \"caption\": \"Gestion Ressources Humaines\",   \"parent\": \"APPS-METIER\",   \"applications\": [\"SIFAC-GEST\"]   },   \"subDomains\": []  },  {   \"domain\" : {   \"code\": \"GEE\",   \"caption\": \"Gestion des enseignements et étudiants\",   \"parent\": \"APPS-METIER\",   \"applications\": []   },   \"subDomains\": []  }  ] }, {  \"domain\" : {  \"code\": \"GFC\",  \"caption\": \"Gestion financière et comptable\",  \"parent\": \"ROOT\",  \"applications\": [\"SIFAC-PL\",\"SIFAC-CO\",\"SIFAC-DOC\"]  },  \"subDomains\": [] }, {  \"domain\" : {  \"code\": \"GP\",  \"caption\": \"Gestion patrimoine\",  \"parent\": \"ROOT\",  \"applications\": [\"GESTIMMO\",\"VIZELIA\"]  },  \"subDomains\": [] } ]}";
     @Override
-    public List<Application> getApplications(String user) throws InterruptedException {
+    public List<Application> getApplications() throws InterruptedException {
         try {
             final ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(jsonApplications, new TypeReference<List<Application>>() {});
@@ -32,7 +32,7 @@ public class MockCatAppService implements ICatAppServ {
     @Override
     public Application getApplication(final String code) throws InterruptedException {
         Application result = null;
-        for(Application app : getApplications("nhenry")) {
+        for(Application app : getApplications()) {
             if(app.getCode().equals(code)) {
                 result = app;
                 break;

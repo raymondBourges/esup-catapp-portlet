@@ -81,10 +81,9 @@ public class CatalogueController {
     @ResourceMapping(value = "apps")
 	public View getApplications(ResourceRequest request) throws IOException, InterruptedException {
         Boolean find = false;
-		String userId = request.getRemoteUser();
         PortletPreferences prefs = request.getPreferences();
         String[] favoris = prefs.getValues("favoris", null);
-        List<Application> appsUser = catalogueService.getApplications(userId);
+        List<Application> appsUser = catalogueService.getApplications();
         List<Application> foundFav = new ArrayList<Application>();
         List<Application> noAccessFav = new ArrayList<Application>();
         ArrayList<String> keepedFav = new ArrayList<String>();
@@ -146,8 +145,25 @@ public class CatalogueController {
         return view;
     }
 
+    @ResourceMapping(value = "updateFavori")
+    public View updateFavorite(ResourceRequest request, @RequestParam("p1") final String query) {
+        PortletPreferences prefs = request.getPreferences();
+        String[] favoris = prefs.getValues("favoris", null);
+        String test = query;
+//        try {
+//            prefs.setValues("favoris", holdedFav.toArray(newFav));
+//            message = "L'application "+query+" est supprimée des favoris";;
+//        } catch (ReadOnlyException e) {
+//            LOG.debug("La propriété 'favoris' n'est pas modifiable");
+//            message = "L'application "+query+" n'a pas pu être supprimée";
+//        }
+        MappingJackson2JsonView view = new MappingJackson2JsonView();
+//        view.addStaticAttribute("message", message);
+        return view;
+    }
+
     @ResourceMapping(value = "deleteFavori")
-    public View deleteFavorite(ResourceRequest request, @RequestParam("p1") final String query) {
+    public View deleteFavorite(ResourceRequest request, @RequestParam("p1") final String query) throws IOException, ValidatorException {
         PortletPreferences prefs = request.getPreferences();
         String[] favoris = prefs.getValues("favoris", null);
         ArrayList<String> holdedFav = new ArrayList<String>();
@@ -160,6 +176,7 @@ public class CatalogueController {
         String[] newFav = new String[holdedFav.size()];
         try {
             prefs.setValues("favoris", holdedFav.toArray(newFav));
+            prefs.store();
             message = "L'application "+query+" est supprimée des favoris";;
         } catch (ReadOnlyException e) {
             LOG.debug("La propriété 'favoris' n'est pas modifiable");
@@ -171,7 +188,7 @@ public class CatalogueController {
     }
 
     @ResourceMapping(value = "addFavori")
-    public View addFavorite(ResourceRequest request, @RequestParam("p1") final String query) {
+    public View addFavorite(ResourceRequest request, @RequestParam("p1") final String query) throws IOException, ValidatorException {
         PortletPreferences prefs = request.getPreferences();
         String[] favoris = prefs.getValues("favoris", null);
         ArrayList<String> holdedFav = new ArrayList<String>();
@@ -183,6 +200,7 @@ public class CatalogueController {
         String[] newFav = new String[holdedFav.size()];
         try {
             prefs.setValues("favoris", holdedFav.toArray(newFav));
+            prefs.store();
             message = "L'application "+query+" a été ajouter aux favoris";;
         } catch (ReadOnlyException e) {
             LOG.debug("La propriété 'favoris' n'est pas modifiable");

@@ -7,7 +7,7 @@
 	<artifactId>esup-catapp-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>esup-catapp-portlet</name>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<description>Catalogue des applications - Portlet</description>
 	<repositories>
 		<repository>
@@ -67,8 +67,8 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<scm>
-		<connection>scm:git:ssh://git@github.com/EsupPortail/esup-catapp-portlet</connection>
-		<developerConnection>scm:git:ssh://git@github.com/EsupPortail/esup-catapp-portlet</developerConnection>
+		<connection>scm:git:ssh://git@github.com/EsupPortail/esup-catapp-portlet.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/EsupPortail/esup-catapp-portlet.git</developerConnection>
 		<url>https://github.com/EsupPortail/esup-catapp-portlet</url>
 		<tag>HEAD</tag>
 	</scm>

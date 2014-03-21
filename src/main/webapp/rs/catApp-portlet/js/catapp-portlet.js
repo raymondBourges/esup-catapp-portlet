@@ -3,9 +3,7 @@ catAppPortlet = function (appName, resourceURL) {
     var app = angular.module(appName, ['ui.bootstrap']);
 
 
-    app.controller('AppList2Ctrl', function ($scope, $window, $http, FavorisService) {
-
-        $scope.box1 = $scope.box2 = true;
+    app.controller('AppList2Ctrl', function ($scope, $http, FavorisService) {
 
         $scope.alerts = [];
 
@@ -18,8 +16,6 @@ catAppPortlet = function (appName, resourceURL) {
                     FavorisService.create(app, true);
                 });
                 $scope.applications = FavorisService.list();
-//            $scope.applications = data.apps;
-//            $scope.removedApps = data.removedApps;
             });
 
         $scope.delFromFav = function (idx) {
@@ -34,35 +30,54 @@ catAppPortlet = function (appName, resourceURL) {
                 .error(function () {
                     $scope.alerts.push({type: 'danger', msg: "L'application " + delApp.code + " n'a pas pu être supprimée"});
                 });
+
+            setTimeout(function() {
+                $(".alert*").fadeOut("slow");
+            }, 1000)
         };
 
-        $scope.addToFav = function (app) {
-            alert(app.code);
-            var favTodd = FavorisService.find(app);
-            if (angular.isUndefined(favTodd) || favTodd == null) {
-                $scope.alerts.push({type: 'danger', msg: "L'application " + app + " est déjà dans les favoris"});
-                return
-            }
-            else {
-                alert(app);
+        $scope.addFav = function (app) {
+            var favTodd = FavorisService.find(app.code);
+            if (!angular.isUndefined(favTodd) || favTodd != null) {
+                $scope.alerts.push({type: 'danger', msg: "L'application " + app.code + " est déjà dans les favoris"});
+            } else {
                 $http
-                    .get(url(encodeResourceUrl(resourceURL), 'addFavori', app))
+                    .get(url(encodeResourceUrl(resourceURL), 'addFavori', app.code))
                     .success(function (data) {
                         $scope.alerts.push({type: 'success', msg: data.message});
-                        FavorisService.create(data.app, false);
+                        FavorisService.create(app, false);
                         $scope.applications = FavorisService.list();
                     })
                     .error(function () {
                         $scope.alerts.push({type: 'danger', msg: "L'application " + data.app.code + " n'a pas pu être ajoutée"});
                     });
-
             }
-
+            $(".dropdown").fadeOut("slow");
+            setTimeout(function() {
+                $(".alert").fadeOut("slow");
+            }, 1000)
         };
 
+        $scope.callTooltip = function(obj) {
+            var idt = obj.target;
+            $( idt ).next( '.dropdown').fadeToggle('slow');
+        }
 
         $scope.closeAlert = function (index) {
             $scope.alerts.splice(index, 1);
+        };
+
+
+        $scope.updateFavorite =  function ()  {
+            $http
+                .get(url(encodeResourceUrl(resourceURL), 'updateFavori', newValues))
+                .success(function (data) {
+                    $scope.alerts.push({type: 'success', msg: data.message});
+                })
+                .error(function () {
+                    $scope.alerts.push({type: 'danger', msg: "Les préférencess n'ont pas pu être mises à jour"});
+                }
+            );
         };
 
         $http
@@ -70,7 +85,32 @@ catAppPortlet = function (appName, resourceURL) {
                 $scope.domaines = data.doms;
             });
 
+//        $scope.$watchCollection('applications', function(newValue, oldValue) {
+//            if (newValue === oldValue) {
+//                console.log("Les memes newValue : "+newValue+"  oldValue  :"+oldValue);
+//                return;
+//            } else {
+//                console.log("newValue : "+newValue+"  oldValue  :"+oldValue);
+//            }
+//        });
+
     });
+
+//    app.directive('sortable', function () {
+//        return {
+//            restrict: 'A',
+//            scope: {
+//                domEl: '@',
+//                sortable: '&'
+//            },
+//            link: function (scope, elm) {
+//                scope.domEl.ondragend(function () {
+//                    scope.sortable();
+//                });
+//
+//            }
+//        }
+//    });
 
     app.factory('applicationFactory', function ($http) {
         var apps;
@@ -82,9 +122,7 @@ catAppPortlet = function (appName, resourceURL) {
         };
     });
 
-
     app.service('FavorisService', function () {
-
         //favoris array to hold list of all favoris
         var favoris = [];
 
@@ -102,7 +140,6 @@ catAppPortlet = function (appName, resourceURL) {
                     return favoris[i];
                 }
             }
-
         }
 
         //iterate through favoris list and delete
@@ -119,139 +156,70 @@ catAppPortlet = function (appName, resourceURL) {
         this.list = function () {
             return favoris;
         }
+
+
     });
 
-    app.directive('collection', function () {
+    app.directive('domaine', function ($compile, $timeout) {
         return {
             restrict: "E",
             replace: true,
+            transclude: true,
             scope: {
-                collection: '='
-            },                    //dl-menu dl-menuopen
-            template: "<ul class='sub-menu'><member ng-repeat='member in collection' member='member'></member></ul>"
-        }
-    });
-
-    app.directive('collection3', function () {
-        return {
-            restrict: "E",
-            replace: true,
-            scope: {
-                collection: '='
-            },                    //dl-submenu
-            template: "<ul class='sub-menu'><member ng-repeat='member in collection' member='member'></member></ul>"
-        }
-    });
-
-    app.directive('collection2', function () {
-        var postsTemplate = "<ul class='sub-menu menudrop'><member2 ng-repeat='member in collection' member='member'></member2></ul>";
-        return {
-            restrict: 'E',
-            // Replace the div with our template
-            replace: true,
-            template: postsTemplate,
-            scope: {
-                domApps: '@'
+                member: '=',
+                addFav: '&'
             },
-            // Specify a controller directly in our directive definition.
+            link: function (scope, element, attrs) {
+                if ((scope.member.subDomains.length > 0)) {
+                    element.append("<a href='#'>{{member.domain.caption}}</a><ul class='sub-menu'><li class='ui-state-default' ng-repeat='domaine in member.subDomains'>" +
+                                   "<domaine member='domaine' add-fav='addFav()'></domaine></li></ul>");
+                    $compile(element.contents())(scope)
+                } else {
+                    element.append("<a href='#'>{{member.domain.caption}}</a>");
+                }
+                if ((scope.member.domain.applications.length > 0)) {
+                    element.append("<ul class='sub-menu menudrop'><application ng-repeat='member in collection   | filter:searchText'  member='member' add-fav='addFav()'></application></ul>");
+                    $compile(element.contents())(scope)
+                }
+            },
             controller: function ($scope, applicationFactory) {
                 $scope.collection = [];
-                if ($scope.domApps) {
+                if ($scope.member.domain.applications.length > 0) {
+                    $scope.domApps = $scope.member.domain.applications.join();
                     return applicationFactory.apps($scope.domApps).success(function (data) {
                         return $scope.collection = data.appsByDom;
                     });
                 }
             }
-        };
-    });
-
-    app.directive('member', function ($compile) {
-        return {
-            restrict: "E",
-            replace: true,
-            scope: {
-                member: '='
-            },
-            template: "<li><a href='#'>{{member.domain.caption}}</a></li>",
-            link: function (scope, element, attrs) {
-                if ((scope.member.subDomains.length > 0)) {
-                    element.append("<collection3 collection='member.subDomains'></collection3>");
-                    $compile(element.contents())(scope)
-                }
-                if ((scope.member.domain.applications.length > 0)) {
-                    element.append("<collection2 dom-apps='{{member.domain.applications.join()}}'></collection2>");
-                    $compile(element.contents())(scope)
-                }
-            }
         }
     });
 
-    app.directive('member2', function ($parse) {
+    app.directive('application', function ($parse) {
         return {
             restrict: "E",
             replace: true,
-            scope: {member: '='},
-            template: "<li class='ui-state-default'><a>{{member.caption}}</a>" +
+            scope: {member: '=',
+                    addFav: '&'
+            },
+            template: "<li class='ui-state-focus'><a>{{member.title}}</a>" +
                 "<div class='dropdown'><span>{{member.description}}</span>" +
                 "<p>" +
                 "<a href='{{member.url}}' class='ui-state-default ui-corner-all'>Ouvrir l'application</a>" +
-                "<a ng-click='pushApp()' class='ui-state-default ui-corner-all'>Ajouter aux favoris</a></p></div>" +
+                "<a href='#' ng-click='pushapp(); togAction($(this).parent().parent());' class='ui-state-default ui-corner-all addfav'>Ajouter aux favoris</a></p></div>" +
                 "</li>",
             link: function (scope, element, attrs) {
-                var getMemberCode = $parse(attrs.member);
-
-                scope.$watch(getMemberCode, function (value) {
-                    scope.code = value.code;
-                });
-                scope.pushApp = function () {
-                    $scope.addToFav(scope.code);
-                }
+                scope.pushapp = function () {
+                        scope.addFav()(scope.member);
+                };
             }
         }
     });
-
-    app.directive('codeapp', function ($parse) {
-        return {
-            restrict: 'A',
-            //Child scope, not isolate
-            scope: true,
-            link: function (scope, element, attrs) {
-                element.bind('click', function (e) {
-                    if ((attrs.codeapp != nu)) {
-                        scope.$apply(function () {
-                            //$parse returns a getter function to be executed against an object
-                            var fn = $parse(attrs.addAction);
-                            //In our case, we want to execute the statement in confirmAction i.e. 'doIt()' against the scope which this directive is bound
-                            //Because the scope is a child scope, not an isolated scope, the prototypical inheritance of scopes will mean that it will eventually find a 'doIt' function bound against a parent's scope
-                            fn(scope, {app: codeapp, $event: e});
-                        });
-                    }
-                });
-            }
-        };
-    });
-
-    app.directive('slideToggle', function () {
-        return {
-            restrict: 'A',
-            scope: {
-                isOpen: "=slideToggle"
-            },
-            link: function (scope, element, attr) {
-                var slideDuration = parseInt(attr.slideToggleDuration, 10) || 200;
-                scope.$watch('isOpen', function (newVal, oldVal) {
-                    if (newVal !== oldVal) {
-                        element.stop().slideToggle(slideDuration);
-                    }
-                });
-            }
-        };
-    });
 };
 
-
 // ************* utils *************
-
+function togAction(obj) {
+    $(obj).fadeToggle('slow');
+}
 
 function encodeResourceUrl(resourceUrl) {
     return resourceUrl.

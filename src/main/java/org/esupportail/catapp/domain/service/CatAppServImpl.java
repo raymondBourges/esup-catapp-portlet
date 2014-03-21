@@ -66,11 +66,11 @@ public class CatAppServImpl implements ICatAppServ {
 	}
 
 	@Override
-	public List<Application> getApplications(String user) throws InterruptedException, IOException {
+	public List<Application> getApplications() throws InterruptedException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		WebTarget applications = createWebTarget(wsAppPath)
-                                .queryParam(wsUserPath, user);
+		WebTarget applications = createWebTarget(wsAppPath);
 //		applications.request().get().getLinks().iterator().next().getRel();
+//        String test = applications.request().get(String.class);
         return mapper.readValue(applications.request().get(String.class), new TypeReference<List<Application>>() {
         });
 	}
@@ -171,39 +171,4 @@ public class CatAppServImpl implements ICatAppServ {
     }
 
 }
-//    @JsonAutoDetect(fieldVisibility= JsonAutoDetect.Visibility.ANY)
-//    @JsonIgnoreProperties(ignoreUnknown = true)
-//    @Value
-//    static class DomainList {
-//        List<Domain> result;
-//        @JsonCreator
-//        public static DomainList domainList(@JsonProperty("result") List<Domain> result) {
-//            return new DomainList(result);
-//        }
-//    }
-//
-//    @JsonIgnoreProperties(ignoreUnknown = true)
-//    @JsonAutoDetect(fieldVisibility= JsonAutoDetect.Visibility.ANY)
-//    @Value
-//    @FieldDefaults(makeFinal = true, level = AccessLevel.PUBLIC)
-//    @Wither
-//    static class Domain {
-//        String code, parent, libelle;
-//        Date creation, maj;
-//        List<Application> applications;
-//        List<Domain> domaines;
-//
-//        @SuppressWarnings("unchecked")
-//        @JsonCreator
-//        public static Domain Domain(Map<String, Object> delegate) {
-//            return new Domain(
-//                    (String) delegate.get("code"),
-//                    (String) delegate.get("parent"),
-//                    (String) delegate.get("libelle"),
-//                    (List<Application>) delegate.get("applications"),
-//                    (List<Domain>) delegate.get("domaines"),
-//                    (Date) delegate.get("creation"),
-//                    (Date) delegate.get("maj"));
-//        }
-//    }
 

@@ -39,7 +39,7 @@ public interface ICatAppServ {
 	 * @return La liste de toutes les applications
 	 * @throws InterruptedException
 	 */
-	List<Application> getApplications(String user) throws InterruptedException, IOException;
+	List<Application> getApplications() throws InterruptedException, IOException;
 
     /**
      * @return L'application correspondant au code

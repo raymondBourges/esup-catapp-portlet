@@ -23,6 +23,10 @@
 			<keywords>esup-catapp-portlet</keywords>
 		</portlet-info>
 		<portlet-preferences>
+            <preference>
+                <name>urlWS</name>
+                <value>http://localhost:8081/</value>
+            </preference>
 			<preference>
 				<name>idDomain</name>
 				<value>ROOT</value>
@@ -33,7 +37,6 @@
                 <value>SIFAC-GEST</value>
                 <value>SIFAC-DOC</value>
                 <value>SIFAC-CO</value>
-                <value>VIZELIA</value>
             </preference>
 		</portlet-preferences>
 		<security-role-ref>

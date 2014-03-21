@@ -1,7 +1,8 @@
+/*Liste des applications favorites */
 #sortable {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding-bottom: 80px;
     width: 80%;
 }
 
@@ -18,32 +19,59 @@
     margin-left: -1.3em;
 }
 
-.alert button {
-    float: right;
+#sortable .deactivated {
+    color: #7f7f7f;
 }
 
-.dropdown { display: none;
+/*Liste des domaines et applications autorisées*/
+.sidebar ul ul {
+    display: none;
+}
+
+.sidebar ul li {
+    list-style-type: none;
+    background: #dfeffc;
+    font-weight: bold;
+    color: #2e6e9e;
+    padding: 2px;
+}
+
+.sidebar ul li a,
+.sidebar ul li a:link,
+.sidebar ul li a:visited {
+    color: #2e6e9e;
+    text-decoration: none;
+}
+
+/*Div d'informations sur l'application*/
+.dropdown {
+    display: none;
     position: absolute;
     border:1px solid #ccc;
     padding: 10px;
-    width: 300px;
+    width: 400px;
     font-weight: bold;
     font-size: 0.8em;
     color: #ffffff;
     background-color: #2e6e9e;
-
 }
 
 .dropdown button { padding: .5em 1em; text-decoration: none; }
 
-.sidebar ul ul {
-    display: none;
+.addfav {
+    float: right;
+}
+
+/*alert de modification de la liste des applications favorites*/
+.alertContainer {
+    height : 30px;
 }
 
 .alert {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
+    padding: .5em 1em;
 }
 .alert-success {
     background-image: -webkit-linear-gradient(top, #dff0d8 0%, #c8e5bc 100%);
@@ -73,4 +101,16 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff2dede', endColorstr='#ffe7c3c3', GradientType=0);
     border-color: #dca7a7;
 }
+.alert-dropdown {
+    background-image: -webkit-linear-gradient(top, #89b7d8 0%, #6ca5ce 100%);
+    background-image: linear-gradient(to bottom, #89b7d8 0%, #6ca5ce 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff2dede', endColorstr='#ffe7c3c3', GradientType=0);
+    border-color: #81b1d5;
+}
+
+.alert button {
+    float: right;
+}
+
 

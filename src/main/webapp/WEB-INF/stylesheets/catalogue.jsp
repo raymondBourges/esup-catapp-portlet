@@ -37,59 +37,69 @@
         }
     </script>
     <div ng-controller="AppList2Ctrl">
+        <div class="slide-header">
+            <h3>Applications m&eacute;tiers et services num&eacute;riques</h3>
+            <div class="alertContainer">
+                <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}
+                </alert>
+            </div>
+        </div>
         <div id="slider-1" class="liquid-slider">
             <div id="dropdown-Menu">
                 <span class="title">Favoris</span>
-                <div id="favs">
-                    <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}
-                    </alert>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            Filtrer: <input type="text" ng-model="searchText"/>
-                        </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        Filtrer: <input type="text" ng-model="searchText"/>
                     </div>
-                    <ul id="sortable">
+                </div>
+                <div id="favs">
+                    <ul id="sortable" sortable="updateFavorite" domEl="$(this)">
+                        <ng-switch on="applications.length > 0">
+                            <div class="ui-state-disabled" ng-switch-when="false">
+                                S&eacute;lectionner les applications dans le catalogue pour les ajouter &agrave; la liste des favoris
+                            </div>
+                        </ng-switch>
                         <li ng-repeat="application in applications  | filter:searchText" class="ui-state-default">
+                            <span class="ui-icon ui-icon-arrowthick-2-n-s" style="float:right"></span>
                             <div ng-switch="{{application.state}}">
                                 <div ng-switch-when="true">
-                                    <a class="'deactivated'">{{application.caption}}</a>
+                                    <a class="deactivated item" ng-click="callTooltip($event)">{{application.title}}</a>
                                     <div class="dropdown">
-                                        <span>Vous n'avez pas les droits suffisants pour accéder à cette application</span>
+                                        <alert class="alert-dropdown">Vous n'avez pas les droits suffisants pour accéder à cette application</alert>
                                         <p>
-                                            <a ng-click="delFromFav($index)" class="ui-state-default ui-corner-all">Supprimer des
-                                                favoris</a>
+                                            <a ng-click="delFromFav($index)" class="ui-state-default ui-corner-all addfav">
+                                                Supprimer des favoris</a>
                                         </p>
                                     </div>
                                 </div>
                                 <div ng-switch-when="false">
                                     <div ng-switch="application.acces">
                                         <div ng-switch-when="Activated">
-                                            <a>{{application.caption}}</a>
+                                            <a class="item" ng-click="callTooltip($event)">{{application.title}}</a>
                                             <div class="dropdown">
                                                 <span>{{application.description}}</span>
                                                 <p>
-                                                    <a href="{{application.url}}" class="ui-state-default ui-corner-all">Ouvrir
-                                                        l'application</a>
-                                                    <a ng-click="delFromFav($index)" class="ui-state-default ui-corner-all">Supprimer des
-                                                        favoris</a>
+                                                    <a href="{{application.url}}" class="ui-state-default ui-corner-all" >
+                                                        Ouvrir l'application</a>
+                                                    <a ng-click="delFromFav($index)" class="ui-state-default ui-corner-all addfav">
+                                                        Supprimer des favoris</a>
                                                 </p>
                                             </div>
                                         </div>
                                         <div ng-switch-when="Deactivated">
-                                            <a class="deactivated">{{application.caption}}</a>
+                                            <a class="deactivated item" ng-click="callTooltip($event)">{{application.title}}</a>
                                             <div class="dropdown">
-                                                <alert>L'application est provisoirement indisponible</alert>
+                                                <alert class="alert-dropdown">L'application est provisoirement indisponible</alert>
                                                 <span>{{application.description}}</span>
                                                 <p>
-                                                    <a ng-click="delFromFav($index)" class="ui-state-default ui-corner-all">Supprimer des
-                                                        favoris</a>
+                                                    <a ng-click="delFromFav($index)" class="ui-state-default ui-corner-all addfav">
+                                                        Supprimer des favoris</a>
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </li>
                     </ul>
                 </div>
@@ -102,7 +112,11 @@
                         <ul>
                             <li>
                                 <a href="javascript:void(0)">{{domaines.domain.caption}}</a>
-                                <collection collection='domaines.subDomains'></collection>
+                                <ul class="sub-menu">
+                                    <li ng-repeat="domaine in domaines.subDomains">
+                                        <domaine member="domaine" add-fav="addFav"></domaine></li></ul>
+                                    </li>
+                                </ul>
                             </li>
 
                         </ul>
