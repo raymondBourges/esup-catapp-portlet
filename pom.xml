@@ -6,7 +6,7 @@
 	<artifactId>catapp-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>Portlet-Catalogue des applications</name>
-	<version>0.1.1</version>
+	<version>0.1.2-SNAPSHOT</version>
 	<description>Catalogue des applications - Portlet</description>
 	<repositories>
 		<repository>
