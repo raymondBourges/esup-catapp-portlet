@@ -1,173 +1,123 @@
 package org.esupportail.catapp.domain.service;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import org.apache.http.HttpEntity;
-import org.apache.http.ParseException;
-import org.apache.http.protocol.HTTP;
-import org.esupportail.catapp.model.Application;
-import org.esupportail.catapp.model.Domain;
-import org.esupportail.catapp.model.DomainsTree;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Request;
-import javax.ws.rs.core.Response;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class CatAppServImpl implements ICatAppServ {
 
-	private String wsCatAppServiceURL;
-	private String wsDomainPath;
-	private String wsAppPath;
-	private String wsUserPath;
-	private WebTarget applications;
+    private String wsDomainPath;
+    private String wsAppPath;
+    private String wsUserPath;
+    private WebTarget webTarget;
 
-    private CatAppServImpl(String wsUrl, String wsDomainPath, String wsUserPath, String wsAppPath) {
-		this.wsCatAppServiceURL = wsUrl;
-		this.wsDomainPath = wsDomainPath;
-		this.wsUserPath = wsUserPath;
-		this.wsAppPath = wsAppPath;
-	}
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static List<String> codesApp = new ArrayList<String>();
+    private static ArrayNode allJApps = MAPPER.createArrayNode();
+    private static JsonNode jDomTree = MAPPER.createArrayNode();
 
-	public static CatAppServImpl CatAppService(String wsUrl, String wsDomainPath, String wsUserPath, String wsAppPath)
-			throws MalformedURLException {
-		return new CatAppServImpl(wsUrl, wsDomainPath, wsUserPath, wsAppPath);
-	}
-	
-	/**
-	 * Create the WebTarget.
-	 * 
-	 * @return WebResource
-	 * @throws MalformedURLException
-	 */
-	public WebTarget createWebTarget(final String path) throws MalformedURLException {
-		ClientConfig config = new ClientConfig()
-				.connectorProvider(new ApacheConnectorProvider());
-		Client client = ClientBuilder.newClient(config);
-		WebTarget domainsClient = client.target(wsCatAppServiceURL);
-		WebTarget responseWebTarget = domainsClient.path(path);
-		return responseWebTarget;
-	}
-
-	@Override
-	public List<Application> getApplications() throws InterruptedException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		WebTarget applications = createWebTarget(wsAppPath);
-//		applications.request().get().getLinks().iterator().next().getRel();
-//        String test = applications.request().get(String.class);
-        return mapper.readValue(applications.request().get(String.class), new TypeReference<List<Application>>() {
-        });
-	}
-
-    @Override
-    public Application getApplication(String code) throws InterruptedException, MalformedURLException {
-        ObjectMapper mapper = new ObjectMapper();
-        WebTarget application = createWebTarget(wsAppPath)
-                                .path(code);
-//		applications.request().get().getLinks().iterator().next().getRel();
-        try {
-            Response rsp = application.request().get();
-            String entity = application.request().get().readEntity(String.class);
-            return mapper.readValue(application.request().get().readEntity(String.class), Application.class);
-        } catch (IOException e) {
-            throw new InterruptedException(e.getMessage());
-        }
+    private CatAppServImpl(String wsDomainPath, String wsUserPath, String wsAppPath) {
+        this.wsDomainPath = wsDomainPath;
+        this.wsUserPath = wsUserPath;
+        this.wsAppPath = wsAppPath;
     }
 
-        //	@Override
-//	public Response getDomains() throws MalformedURLException {
-//		WebTarget domains = createWebTarget("domains");
-//		return domains.request().get();
-//	}
-
-	@Override
-	public List<Domain> getDomains(String domId, String user) throws InterruptedException, IOException {
-        WebTarget domains = createWebTarget(wsDomainPath)
-                            .path(domId)
-                            .queryParam(wsUserPath, user);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(domains.request().get(String.class), new TypeReference<List<Domain>>() {
-        });
-	}
-
-    @Override
-    public Domain getDomain(String code, String user) throws InterruptedException, MalformedURLException {
-            try {
-                WebTarget domain = createWebTarget(wsDomainPath);
-                return domain.path(code).request().get(Domain.class);
-            } catch (ProcessingException | WebApplicationException e) {
-                throw new InterruptedException(e.getMessage());
-            }
-        }
-
-    @Override
-    public DomainsTree getDomainsTree(String domId, String user) throws InterruptedException, MalformedURLException {
-        try {
-            WebTarget domainsTree = createWebTarget(wsDomainPath);
-            Invocation.Builder rs = domainsTree.path(domId)
-                    .path("/tree")
-                    .queryParam(wsUserPath, user)
-                    .request();
-            Response rsp = rs.get();
-            String entity = rsp.readEntity(String.class);
-            ObjectMapper treeObjectMapper = new ObjectMapper();
-            DomainsTree dt = treeObjectMapper.readValue(entity, DomainsTree.class);
-            return dt;
-        } catch (ProcessingException | WebApplicationException | IOException e) {
-            throw new InterruptedException(e.getMessage());
-        }
+    public static CatAppServImpl CatAppService(String wsDomainPath, String wsUserPath, String wsAppPath)
+            throws MalformedURLException {
+        return new CatAppServImpl(wsDomainPath, wsUserPath, wsAppPath);
     }
 
+    /**
+     * Create the WebTarget.
+     *
+     * @return WebResource
+     * @throws MalformedURLException
+     */
+    public WebTarget createWebTarget(final String wsCatAppServiceURL) throws MalformedURLException {
+        ClientConfig config = new ClientConfig()
+                .connectorProvider(new ApacheConnectorProvider());
+        Client client = ClientBuilder.newClient(config);
+        this.webTarget = client.target(wsCatAppServiceURL);
+        return this.webTarget;
+    }
 
-    public String getResponseBody(final HttpEntity entity) throws IOException, ParseException {
-        if (entity == null) {
-            throw new IllegalArgumentException("HTTP entity may not be null");
+    @Override
+    public JsonNode getApplications() {
+        return this.allJApps;
+    }
+
+    @Override
+    public List<String> getCodesApplications() {
+        return this.codesApp;
+    }
+
+    @Override
+    public void initData(String wsUrl, String domId, String user) throws IOException, InterruptedException {
+        WebTarget domainsTree = createWebTarget(wsUrl)
+                .path(wsDomainPath)
+                .path(domId)
+                .path("/tree")
+                .queryParam(wsUserPath, user);
+        String domainTree = domainsTree.request().get(String.class);
+        JsonNode nodeTree = MAPPER.readTree(domainTree);
+        jDomTree = completeTree(nodeTree);
+    }
+
+    private ObjectNode completeTree(JsonNode nodeTree) throws IOException, InterruptedException {
+        ObjectNode jDomTree = (ObjectNode) nodeTree;
+        JsonNode jDom;
+        JsonNode doms;
+        JsonNode apps = nodeTree.path("domain").path("applications");
+        if(apps.isArray()) {
+            ((ObjectNode)nodeTree.path("domain")).put("applications", AppsForDom(apps));
         }
-
-        InputStream instream = entity.getContent();
-
-        if (instream == null) {
-            return "";
+        for (JsonNode jsubDom : jDomTree.path("subDomains")) {
+            completeTree(jsubDom);
         }
+        return jDomTree;
+    }
 
-        if (entity.getContentLength() > Integer.MAX_VALUE) {
-            throw new IllegalArgumentException(
-
-                    "HTTP entity too large to be buffered in memory");
-        }
-
-        StringBuilder buffer = new StringBuilder();
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(instream, HTTP.UTF_8));
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
+    private JsonNode AppsForDom(JsonNode apps) throws IOException, InterruptedException {
+        String appString;
+        JsonNode jApp;
+        ArrayNode jApps = MAPPER.createArrayNode();
+        for (JsonNode sApp : apps) {
+            appString = sApp.asText();
+            jApp = getApplication(appString);
+            if(!codesApp.contains(jApp.get("code").asText())) {
+                codesApp.add(jApp.get("code").asText());
+                allJApps.add(jApp);
             }
-
-        } finally {
-            instream.close();
-            reader.close();
+            jApps.add(jApp);
         }
-        return buffer.toString();
+        return jApps;
+    }
 
+    @Override
+    public JsonNode getApplication(String code) throws InterruptedException, IOException {
+        WebTarget application = this.webTarget
+                .path(wsAppPath)
+                .path(code);
+        String sApp = application.request().get(String.class);
+        JsonNode jApp = MAPPER.readTree(sApp);
+        return jApp;
+    }
+
+    @Override
+    public JsonNode getDomainsTree() {
+        return this.jDomTree;
     }
 
 }

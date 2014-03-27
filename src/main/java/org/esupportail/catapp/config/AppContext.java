@@ -27,8 +27,8 @@ public class AppContext {
     @Value("${ws.application.path}")
     private String wsAppPath;
 
-    @Value("${ws.catApp.url}")
-    private String wsCatAppServiceURL;
+//    @Value("${ws.catApp.url}")
+//    private String wsCatAppServiceURL;
 
 
     @Bean
@@ -57,8 +57,9 @@ public class AppContext {
 //    public ICatAppServ catAppService() throws MalformedURLException {
 //        return new MockCatAppService();
 //    }
+
     @Bean
     public ICatAppServ catAppService() throws MalformedURLException {
-        return CatAppServImpl.CatAppService(wsCatAppServiceURL, wsDomainPath, wsUserPath, wsAppPath);
+        return CatAppServImpl.CatAppService(wsDomainPath, wsUserPath, wsAppPath);
     }
 }

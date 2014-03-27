@@ -4,46 +4,32 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import org.esupportail.catapp.model.Application;
-import org.esupportail.catapp.model.Domain;
-
-import org.esupportail.catapp.model.DomainsTree;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public interface ICatAppServ {
 
-//	/**
-//	 * @return La liste de tous les domaines
-//	 * @throws InterruptedException
-//	 */
-//	Response getDomains() throws InterruptedException;
-
-	/**
-	 * @return Le domaine
-	 * @throws InterruptedException
-	 */
-	List<Domain> getDomains(String domId, String user) throws InterruptedException, IOException;
+    /**
+     * Initialise la liste des applications autorisées à l'utilisateur
+     * et complète l'arbre
+     */
+    void initData(String wsUrl, String domId, String user) throws IOException, InterruptedException;
 
     /**
-     * @return Le domaine correspondant au code
-     * @throws InterruptedException
+     * @return L'arbre des domaines à partir de la racine
+     * spécifiée dnas les préférences de la portlet
      */
-    Domain getDomain(String code, String user) throws InterruptedException, MalformedURLException;
+    JsonNode getDomainsTree();
 
     /**
-     * @return L'arbre des domaines dont la racine correspond au code
-     * @throws InterruptedException
+     * @return La liste de toutes les applications
      */
-    DomainsTree getDomainsTree(String domId, String user) throws InterruptedException, MalformedURLException;
+    JsonNode getApplications();
 
-	/**
-	 * @return La liste de toutes les applications
-	 * @throws InterruptedException
-	 */
-	List<Application> getApplications() throws InterruptedException, IOException;
+    List<String> getCodesApplications();
 
     /**
      * @return L'application correspondant au code
-     * @throws InterruptedException
+     * @throws InterruptedException IOException
      */
-    Application getApplication(String code) throws InterruptedException, MalformedURLException;
+    JsonNode getApplication(String code) throws InterruptedException, IOException;
 }

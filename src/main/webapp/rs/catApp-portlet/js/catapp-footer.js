@@ -10,7 +10,6 @@ htmlString += "});"
 
 htmlString += "});";
 
-
 function launchJs() {
     var menu = document.createElement('script');
     menu.type = 'text/javascript';
@@ -18,13 +17,6 @@ function launchJs() {
     document.getElementById('dropdown-Menu').appendChild(menu);
 }
 setTimeout("launchJs();", 2000)
-
-$(function () {
-    $("#sortable").sortable({
-        placeholder: "ui-state-highlight"
-    });
-    $("#sortable").disableSelection();
-});
 
 $(function () {
     $('#slider-1').liquidSlider({

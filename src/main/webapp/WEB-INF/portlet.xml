@@ -6,7 +6,7 @@
 	version="2.0">
 	<portlet>
 		<portlet-name>esup-catapp-portlet</portlet-name>
-		<display-name>esup-catapp-portlet</display-name>
+		<display-name>Portlet - Catalogue des applications</display-name>
 		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
 
 		<init-param>
@@ -24,8 +24,9 @@
 		</portlet-info>
 		<portlet-preferences>
             <preference>
-                <name>urlWS</name>
+                <name>wsUrl</name>
                 <value>http://localhost:8081/</value>
+                <read-only>true</read-only>
             </preference>
 			<preference>
 				<name>idDomain</name>
@@ -34,9 +35,6 @@
 			</preference>
             <preference>
                 <name>favoris</name>
-                <value>SIFAC-GEST</value>
-                <value>SIFAC-DOC</value>
-                <value>SIFAC-CO</value>
             </preference>
 		</portlet-preferences>
 		<security-role-ref>

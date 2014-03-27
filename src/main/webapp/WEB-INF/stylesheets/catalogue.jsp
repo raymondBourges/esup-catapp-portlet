@@ -8,7 +8,7 @@
 <head>
     <script type="text/javascript">
         angular.element(document).ready(function () {
-            catAppPortlet("<portlet:namespace/>", "${resourceURL}");
+            catAppPortlet("<portlet:namespace/>", "${resourceURL}", "${actionURL}");
             angular.bootstrap(angular.element(document.getElementById("catAppPortlet-<portlet:namespace/>")), ["<portlet:namespace/>"]);
         });
     </script>
@@ -53,12 +53,12 @@
                     </div>
                 </div>
                 <div id="favs">
-                    <ul id="sortable" sortable="updateFavorite" domEl="$(this)">
-                        <ng-switch on="applications.length > 0">
-                            <div class="ui-state-disabled" ng-switch-when="false">
-                                S&eacute;lectionner les applications dans le catalogue pour les ajouter &agrave; la liste des favoris
-                            </div>
-                        </ng-switch>
+                    <ng-switch on="applications.length > 0">
+                        <div class="ui-state-disabled" ng-switch-when="false">
+                            S&eacute;lectionner les applications dans le catalogue pour les ajouter &agrave; la liste des favoris
+                        </div>
+                    </ng-switch>
+                    <ul id="sortable"  ui-sortable="sortableOptions" ng-model="applications">
                         <li ng-repeat="application in applications  | filter:searchText" class="ui-state-default">
                             <span class="ui-icon ui-icon-arrowthick-2-n-s" style="float:right"></span>
                             <div ng-switch="{{application.state}}">
@@ -77,7 +77,7 @@
                                         <div ng-switch-when="Activated">
                                             <a class="item" ng-click="callTooltip($event)">{{application.title}}</a>
                                             <div class="dropdown">
-                                                <span>{{application.description}}</span>
+                                                <span ng-bind-html="application.description"></span>
                                                 <p>
                                                     <a href="{{application.url}}" class="ui-state-default ui-corner-all" >
                                                         Ouvrir l'application</a>
@@ -90,7 +90,7 @@
                                             <a class="deactivated item" ng-click="callTooltip($event)">{{application.title}}</a>
                                             <div class="dropdown">
                                                 <alert class="alert-dropdown">L'application est provisoirement indisponible</alert>
-                                                <span>{{application.description}}</span>
+                                                <span ng-bind-html="application.description"></span>
                                                 <p>
                                                     <a ng-click="delFromFav($index)" class="ui-state-default ui-corner-all addfav">
                                                         Supprimer des favoris</a>
