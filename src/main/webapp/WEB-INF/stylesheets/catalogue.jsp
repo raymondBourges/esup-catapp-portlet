@@ -44,12 +44,12 @@
                 </alert>
             </div>
         </div>
-        <div id="slider-1" class="liquid-slider">
-            <div id="dropdown-Menu">
+        <div id="slider-<portlet:namespace/>" class="liquid-slider">
+            <div id="dropdown-Menu-<portlet:namespace/>">
                 <span class="title">Favoris</span>
                 <div class="row">
                     <div class="col-sm-12">
-                        Filtrer: <input type="text" ng-model="searchText"/>
+                        Filtrer: <input type="text" ng-model="filterText"/>
                     </div>
                 </div>
                 <div id="favs">
@@ -58,14 +58,14 @@
                             S&eacute;lectionner les applications dans le catalogue pour les ajouter &agrave; la liste des favoris
                         </div>
                     </ng-switch>
-                    <ul id="sortable"  ui-sortable="sortableOptions" ng-model="applications">
-                        <li ng-repeat="application in applications  | filter:searchText" class="ui-state-default">
+                    <ul class="sortable" ui-sortable="sortableOptions" ng-model="applications">
+                        <li ng-repeat="application in applications  | filter:filterText" class="ui-state-default">
                             <span class="ui-icon ui-icon-arrowthick-2-n-s" style="float:right"></span>
                             <div ng-switch="{{application.state}}">
                                 <div ng-switch-when="true">
                                     <a class="deactivated item" ng-click="callTooltip($event)">{{application.title}}</a>
                                     <div class="dropdown">
-                                        <alert class="alert-dropdown">Vous n'avez pas les droits suffisants pour accéder à cette application</alert>
+                                        <div class="alert-dropdown">Vous n'avez pas les droits suffisants pour acc&eacute;der &agrave; cette application</div>
                                         <p>
                                             <a ng-click="delFromFav($index)" class="ui-state-default ui-corner-all addfav">
                                                 Supprimer des favoris</a>
@@ -89,7 +89,7 @@
                                         <div ng-switch-when="Deactivated">
                                             <a class="deactivated item" ng-click="callTooltip($event)">{{application.title}}</a>
                                             <div class="dropdown">
-                                                <alert class="alert-dropdown">L'application est provisoirement indisponible</alert>
+                                                <div class="alert-dropdown">L'application est provisoirement indisponible</div>
                                                 <span ng-bind-html="application.description"></span>
                                                 <p>
                                                     <a ng-click="delFromFav($index)" class="ui-state-default ui-corner-all addfav">
@@ -106,28 +106,75 @@
             </div>
             <div id="catalogue" class="main clearfix">
                 <span class="title">Catalogue</span>
+                <div class="row">
+                    <div class="col-sm-12">
+                        Rechecher : <input type="text" ng-model="searchText"/>
+                    </div>
+                </div>
 
                 <div class="column">
-                    <div class="sidebar">
-                        <ul>
-                            <li>
-                                <a href="javascript:void(0)">{{domaines.domain.caption}}</a>
-                                <ul class="sub-menu">
-                                    <li ng-repeat="domaine in domaines.subDomains">
-                                        <domaine member="domaine" add-fav="addFav"></domaine></li></ul>
-                                    </li>
-                                </ul>
-                            </li>
 
+                    <div ng-show="(filteredData = (allApplications | filter:searchText)) && searchText && searchText.length >= 2">
+                        <span class="result-title">R&eacute;sultat de la recherche : </span>
+                        <ul>
+                            <li ng-repeat="application in filteredData" class="ui-state-default">
+                                <a class="item" ng-click="callTooltip($event)">{{application.title}}</a>
+                                <div class="dropdown">
+                                    <span ng-bind-html="application.description"></span>
+                                    <p>
+                                        <a href="{{application.url}}" class="ui-state-default ui-corner-all" >
+                                            Ouvrir l'application</a>
+                                        <a ng-click="addToFav($index)" class="ui-state-default ui-corner-all">
+                                            Ajouter aux favoris</a>
+                                    </p>
+                                </div>
+                            </li>
                         </ul>
                     </div>
-                    <%--<div id="dl-menu" class="dl-menuwrapper">--%>
-                       <%--<collection collection='domaines.subDomains'></collection>--%>
-                    <%--</div>--%>
-                </div>
+
+                    <div class="sidebar" ng-hide="searchText && searchText.length >= 2">
+                        <span>{{domaines.domain.length}}</span>
+                        <div ng-switch="domaines.domain.caption.length>0">
+                            <div ng-switch-when="true">
+                                <ul>
+                                    <li>
+                                        <a href="javascript:void(0)">{{domaines.domain.caption}}<span class="ui-icon ui-icon-play"></span></a>
+                                        <ul class="sub-menu">
+                                            <li ng-repeat="domaine in domaines.subDomains">
+                                                <domaine member="domaine" add-fav="addFav"></domaine></li></ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="ui-state-disabled" ng-switch-when="false">
+                                La liste des domaines et applications autoris&eacute;s est vide.
+                            </div>
+                        </div>
+                    </div>
+                    </div>
             </div>
         </div>
     </div>
 </div>
 <rs:aggregatedResources path="/footerResources.xml"/>
+<script type="text/javascript">
+    function launchJs() {
+        var menu = document.createElement('script');
+        menu.type = 'text/javascript';
+        menu.innerHTML = htmlString;
+        document.getElementById('dropdown-Menu-<portlet:namespace/>').appendChild(menu);
+    }
+    setTimeout("launchJs();", 2000)
+
+    $(function () {
+        $('#slider-<portlet:namespace/>').liquidSlider({
+            autoHeight: false,
+            slideEaseDuration: 1000,
+            heightEaseDuration: 1000,
+            animateIn: "lightSpeedOut",
+            animateOut: "lightSpeedIn"
+        });
+    });
+</script>
 </html>

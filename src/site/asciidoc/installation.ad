@@ -1,0 +1,41 @@
+= Guide d{apos}installation et de configuration de la portlet ``Catalogue des applications''
+Auteurs <dsi-devq@listes.univ-rennes1.fr>
+:toc2:
+:toclevels: 5
+:toc-title: Sommaire
+
+== 1. Prérequis
+* Services REST du catalogue des applications installés en version 0.1.0
+
+== 2. Récupération de l{apos}archive de l{apos}application
+L{apos}application est packagée et déposée sur un dépôt centralisé disponible https://mvn.esup-portail.org/content/repositories/releases/org/esupportail/catapp-portlet/<version.application>/catapp-portlet-<version.application>.war[ici]
+
+où [small]+<version.application>+ correspond à la version de l'application à installer (ex: 0.1.0).
+
+== 3. Déploiement dans un Uportal
+La documentation destinée à l{apos}administration d'un Uportal est disponible https://wiki.jasig.org/display/UPM40/Site+Administration[ici].
+
+Pour déployer l{apos}application, se positionner dans le répertoire source de Uportal et lancer la commande suivante :
+
+ant deployPortletApp -DportletApp=/path/to/catapp-portlet-<version.application>.war
+
+== 4. Adapter et modifier la configuration de la portlet
+Utilisez alors l'interface graphique d'administration du portail pour publier et personnaliser les préférences de la portlet ''catapp-portlet''
+[cols="1,2,1", options="header"]
+|===
+| Préférence
+| Description
+| Exemple
+
+| wsUrl
+| URL des services REST du catalogue des applications
+| \http://localhost:8080
+
+| idDomain
+| Id du domaine racine, à partir duquel l'arbre des domaines et applications d{apos}un utilisateur sera construit.
+| ROOT
+
+| favoris
+| Préférence servant à mémoriser les applications que l{apos}utilisateur souhaite retrouver dans ses favoris
+|
+|===

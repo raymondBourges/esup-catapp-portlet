@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.esupportail</groupId>
 	<artifactId>catapp-portlet</artifactId>
@@ -8,6 +9,7 @@
 	<name>Portlet-Catalogue des applications</name>
 	<version>0.1.2-SNAPSHOT</version>
 	<description>Catalogue des applications - Portlet</description>
+
 	<repositories>
 		<repository>
 			<id>esup-snapshots</id>
@@ -133,6 +135,32 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>${asciidoctor.version}</version>
+                <executions>
+                    <execution>
+                        <id>output-html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html5</backend>
+                            <attributes>
+                                <copycss>true</copycss>
+                                <lang>fr</lang>
+                                <sourceHighlighter>coderay</sourceHighlighter>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sourceDirectory>src/site/asciidoc</sourceDirectory>
+                    <outputDirectory>${project.build.directory}/site</outputDirectory>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -238,5 +266,6 @@
 		<spring.version>4.0.1.RELEASE</spring.version>
 		<resourceserver.version>1.0.33</resourceserver.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <asciidoctor.version>0.1.4</asciidoctor.version>
 	</properties>
 </project>

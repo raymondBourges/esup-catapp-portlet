@@ -10,6 +10,7 @@ import javax.portlet.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.esupportail.catapp.domain.service.ICatAppServ;
 
 import org.apache.commons.logging.Log;
@@ -51,12 +52,12 @@ public class CatalogueController {
     private static final Log LOG = LogFactory.getLog(CatalogueController.class);
 
     /**
-     * Traitement 'Render'
-     *
+     * Add ressourceURL and actionURL to spring MVC model
      * @param request
-     *            RenderRequest la requête
+     *            RenderRequest the request
      * @param response
-     *            RenderResponse la réponse
+     *            RenderResponse the response
+     * @return completed spring MVC model
      */
     @RenderMapping
     public String goHome(RenderRequest request, RenderResponse response, ModelMap model) throws IOException, InterruptedException {
@@ -79,9 +80,8 @@ public class CatalogueController {
     }
 
     /**
-     * Add ressourceURL to spring MVC model
+     * Init domains tree and applications list in service
      * @param request
-     * @return completed spring MVC model
      */
     protected void bindInitialModel(final RenderRequest request) throws IOException, InterruptedException {
         PortletPreferences prefs = request.getPreferences();
@@ -91,16 +91,23 @@ public class CatalogueController {
         catalogueService.initData(wsUrl, idDomain, userId);
     }
 
-    @ResourceMapping(value = "apps")
+    /**
+     * Add preferred application to spring MVC model
+     * @param request
+     *            RenderRequest the request
+     * @return completed spring MVC model
+     */
+    @ResourceMapping(value = "favapps")
 	public View getApplications(ResourceRequest request) throws IOException, InterruptedException {
         Boolean find = false;
         PortletPreferences prefs = request.getPreferences();
-        String[] favoris = prefs.getValues("favoris", null);
+        String[] favoris = prefs.getValues("favoris", new String[0]);
         JsonNode appsUser = catalogueService.getApplications();
         ArrayNode allowedFav = new ObjectMapper().createArrayNode();
         ArrayNode disallowedFavs = new ObjectMapper().createArrayNode();
         MappingJackson2JsonView view = new MappingJackson2JsonView();
         for (String favori : favoris) {
+            find = false;
             for (JsonNode jApp : appsUser) {
                 if(favori.equals(jApp.get("code").asText())) {
                     allowedFav.add(jApp);
@@ -111,8 +118,8 @@ public class CatalogueController {
             if(!find) {
                 JsonNode disallowedFav = catalogueService.getApplication(favori);
                 if(disallowedFav != null) {
+                    ((ObjectNode)disallowedFav).put("url", "");
                     disallowedFavs.add(disallowedFav);
-                    break;
                 }
             }
         }
@@ -121,22 +128,39 @@ public class CatalogueController {
         return view;
 	}
 
+    /**
+     * Add domains tree to spring MVC model
+     * @param request
+     *            RenderRequest the request
+     * @return completed spring MVC model
+     */
     @ResourceMapping(value = "doms")
     public View getDomains(ResourceRequest request) throws IOException, InterruptedException {
-//        String userId = request.getRemoteUser();
-        String userId = "nhenry";
-        PortletPreferences prefs = request.getPreferences();
-        String idDomain = prefs.getValue("idDomain", null).trim();
         MappingJackson2JsonView view = new MappingJackson2JsonView();
         JsonNode jdoms = catalogueService.getDomainsTree();
-//        DomainsTree result = catalogueService.getDomainsTree(idDomain, userId);
         view.addStaticAttribute("doms", jdoms);
         return view;
     }
 
     /**
+     * Add all allowed applications to spring MVC model
+     * @param request
+     *            RenderRequest the request
+     * @return completed spring MVC model
+     */
+    @ResourceMapping(value = "allowedapps")
+    public View getPerms(ResourceRequest request) throws IOException, InterruptedException {
+        MappingJackson2JsonView view = new MappingJackson2JsonView();
+        JsonNode japps = catalogueService.getApplications();
+        view.addStaticAttribute("allowedapps", japps);
+        return view;
+    }
+
+
+    /**
+     * Update portlet preferences
      * Receive the key, action parameters from UI.
-     * Because the action value is updateFavorite, update updateFavorite will be called.
+     * Because the action value is updateFavorite, updateFavorite will be called.
      * @param request
      * @param response
      * @throws Exception
@@ -153,6 +177,7 @@ public class CatalogueController {
             LOG.debug("La propriété 'favoris' n'est pas modifiable");
         }
     }
+
 
     public static final class ResourceUrlW {
 

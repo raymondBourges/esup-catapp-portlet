@@ -6,10 +6,15 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -17,6 +22,8 @@ import java.util.List;
 
 
 public class CatAppServImpl implements ICatAppServ {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private String wsDomainPath;
     private String wsAppPath;
@@ -70,9 +77,12 @@ public class CatAppServImpl implements ICatAppServ {
                 .path(domId)
                 .path("/tree")
                 .queryParam(wsUserPath, user);
-        String domainTree = domainsTree.request().get(String.class);
-        JsonNode nodeTree = MAPPER.readTree(domainTree);
-        jDomTree = completeTree(nodeTree);
+        Response response = domainsTree.request().get();
+        if(response.getStatus() == 200) {
+            String domainTree = response.readEntity(String.class);
+            JsonNode nodeTree = MAPPER.readTree(domainTree);
+            jDomTree = completeTree(nodeTree);
+        }
     }
 
     private ObjectNode completeTree(JsonNode nodeTree) throws IOException, InterruptedException {
@@ -110,9 +120,19 @@ public class CatAppServImpl implements ICatAppServ {
         WebTarget application = this.webTarget
                 .path(wsAppPath)
                 .path(code);
-        String sApp = application.request().get(String.class);
-        JsonNode jApp = MAPPER.readTree(sApp);
-        return jApp;
+        try {
+            return MAPPER.readTree(application.request().get(String.class));
+        } catch (Exception e) {
+            log.error("error in get one application", e);
+            throw new InterruptedException(e.getMessage());
+        }
+//        Response response = application.request().get();
+//        if(response.getStatus() == 200) {
+//            String sApp = response.readEntity(String.class);
+//            JsonNode jApp = MAPPER.readTree(sApp);
+//            return jApp;
+//        }
+//        return null;
     }
 
     @Override

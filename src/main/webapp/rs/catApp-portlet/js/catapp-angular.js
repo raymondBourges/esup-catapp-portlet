@@ -11,7 +11,7 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
         $scope.prefs = [];
 
         $http
-            .get(url(encodeUrl(resourceURL), 'apps')).success(function (data) {
+            .get(url(encodeUrl(resourceURL), 'favapps')).success(function (data) {
                 angular.forEach(data.apps, function (app) {
                     $scope.applications.push(FavorisService.create(app, false));
                     $scope.prefs.push(app.code);
@@ -27,6 +27,11 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
             $scope.prefs = FavorisService.delete(delApp.code, $scope.prefs);
             $scope.applications.splice(idx, 1);
             $scope.updateFavorite();
+        };
+
+        $scope.addToFav = function (idx) {
+            var addApp = $scope.allApplications[idx];
+            $scope.addFav(addApp);
         };
 
         $scope.addFav = function (app) {
@@ -59,6 +64,11 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
         $http
             .get(url(encodeUrl(resourceURL), 'doms')).success(function (data) {
                 $scope.domaines = data.doms;
+            });
+
+        $http
+            .get(url(encodeUrl(resourceURL), 'allowedapps')).success(function (data) {
+                $scope.allApplications = data.allowedapps;
             });
 
         $scope.sortableOptions = {
@@ -115,11 +125,11 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
             },
             link: function (scope, element, attrs) {
                 if ((scope.member.subDomains.length > 0)) {
-                    element.append("<a href='#'>{{member.domain.caption}}</a><ul class='sub-menu'><li class='ui-state-default' ng-repeat='domaine in member.subDomains'>" +
+                    element.append("<a href='#'><span class='ui-icon ui-icon-play'></span>{{member.domain.caption}}</a><ul class='sub-menu'><li ng-repeat='domaine in member.subDomains'>" +
                                    "<domaine member='domaine' add-fav='addFav()'></domaine></li></ul>");
                     $compile(element.contents())(scope)
                 } else {
-                    element.append("<a href='#'>{{member.domain.caption}}</a>");
+                    element.append("<a href='#'><span class='ui-icon ui-icon-play'></span>{{member.domain.caption}}</a>");
                 }
                 if ((scope.member.domain.applications.length > 0)) {
                     element.append("<ul class='sub-menu menudrop'><application ng-repeat='member in member.domain.applications'  member='member' add-fav='addFav()'></application></ul>");
