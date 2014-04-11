@@ -66,6 +66,10 @@
 			<name>esup-portail</name>
 			<url>https://mvn.esup-portail.org/content/repositories/snapshots</url>
 		</snapshotRepository>
+		<site>
+			<id>site-docs</id>
+			<url>${site.url}</url>
+		</site>
 	</distributionManagement>
 	<scm>
 		<connection>scm:git:ssh://git@github.com/EsupPortail/esup-catapp-portlet.git</connection>
@@ -265,7 +269,8 @@
 		<portlet.version>2.0</portlet.version>
 		<spring.version>4.0.1.RELEASE</spring.version>
 		<resourceserver.version>1.0.33</resourceserver.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <asciidoctor.version>0.1.4</asciidoctor.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<asciidoctor.version>0.1.4</asciidoctor.version>
+		<site.url>file:///tmp/catapp-portlet/site</site.url>
 	</properties>
 </project>
