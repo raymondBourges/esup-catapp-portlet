@@ -77,6 +77,32 @@
 		<url>https://github.com/EsupPortail/esup-catapp-portlet</url>
 		<tag>HEAD</tag>
 	</scm>
+	<reporting>
+		<plugins>
+		    <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-project-info-reports-plugin</artifactId>
+			<version>2.7</version>
+			<configuration>
+			    <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+			</configuration>
+		    </plugin>
+		    <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-changelog-plugin</artifactId>
+			<version>2.2</version>
+			<inherited>true</inherited>
+			<reportSets>
+			    <reportSet>
+				<id>changelog-report</id>
+				<reports>
+				    <report>changelog</report>
+				</reports>
+			    </reportSet>
+			</reportSets>
+		    </plugin>
+		</plugins>
+	</reporting>
 	<build>
 		<resources>
 			<resource>
@@ -147,33 +173,54 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.asciidoctor</groupId>
-                <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>${asciidoctor.version}</version>
-                <executions>
-                    <execution>
-                        <id>output-html</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>html5</backend>
-                            <attributes>
-                                <copycss>true</copycss>
-                                <lang>fr</lang>
-                                <sourceHighlighter>coderay</sourceHighlighter>
-                            </attributes>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <sourceDirectory>src/site/asciidoc</sourceDirectory>
-                    <outputDirectory>${project.build.directory}/site</outputDirectory>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>${asciidoctor.version}</version>
+				<executions>
+				    <execution>
+					<id>output-html</id>
+					<phase>generate-resources</phase>
+					<goals>
+					    <goal>process-asciidoc</goal>
+					</goals>
+					<configuration>
+					    <backend>html5</backend>
+					    <attributes>
+						<copycss>true</copycss>
+						<lang>fr</lang>
+						<sourceHighlighter>coderay</sourceHighlighter>
+					    </attributes>
+					</configuration>
+				    </execution>
+				</executions>
+				<configuration>
+				    <sourceDirectory>src/site/asciidoc</sourceDirectory>
+				    <outputDirectory>${project.build.directory}/site</outputDirectory>
+				</configuration>
+			</plugin>
 		</plugins>
+		<pluginManagement>
+		    <plugins>
+		        <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-site-plugin</artifactId>
+		            <version>3.3</version>
+		            <configuration>
+		                <locales>fr</locales>
+		                <inputEncoding>UTF-8</inputEncoding>
+		                <outputEncoding>UTF-8</outputEncoding>
+		            </configuration>
+		            <dependencies>
+		                <dependency><!-- add support for ssh/scp -->
+		                    <groupId>org.apache.maven.wagon</groupId>
+		                    <artifactId>wagon-ssh</artifactId>
+		                    <version>1.0</version>
+		                </dependency>
+		            </dependencies>
+		        </plugin>
+		    </plugins>
+		</pluginManagement>
 	</build>
 	<dependencies>
 		<dependency>
