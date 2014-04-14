@@ -149,7 +149,7 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
             template: "<li class='ui-state-focus'><a>{{member.title}}</a>" +
                 "<div class='dropdown'><span ng-bind-html='member.description'></span>" +
                 "<p>" +
-                "<a href='{{member.url}}' class='ui-state-default ui-corner-all'>Ouvrir l'application</a>" +
+                "<a href='{{member.url}}' class='ui-state-default ui-corner-all' target='_blank'>Ouvrir l'application</a>" +
                 "<a href='#' ng-click='pushapp();' class='ui-state-default ui-corner-all addfav'>Ajouter aux favoris</a></p></div>" +
                 "</li>",
             link: function (scope, element, attrs) {

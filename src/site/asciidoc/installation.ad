@@ -5,6 +5,8 @@ Auteurs <dsi-devq@listes.univ-rennes1.fr>
 :toc-title: Sommaire
 
 == 1. Prérequis
+* JDK 1.7
+* Tomcat 7
 * Services REST du catalogue des applications installés en version 0.1.0
 
 == 2. Récupération de l{apos}archive de l{apos}application

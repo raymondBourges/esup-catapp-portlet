@@ -79,7 +79,7 @@
                                             <div class="dropdown">
                                                 <span ng-bind-html="application.description"></span>
                                                 <p>
-                                                    <a href="{{application.url}}" class="ui-state-default ui-corner-all" >
+                                                    <a href="{{application.url}}" class="ui-state-default ui-corner-all" target="_blank">
                                                         Ouvrir l'application</a>
                                                     <a ng-click="delFromFav($index)" class="ui-state-default ui-corner-all addfav">
                                                         Supprimer des favoris</a>
