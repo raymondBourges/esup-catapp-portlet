@@ -1,5 +1,4 @@
 = Guide d{apos}installation et de configuration de la portlet ``Catalogue des applications''
-Auteurs <dsi-devq@listes.univ-rennes1.fr>
 :toc2:
 :toclevels: 5
 :toc-title: Sommaire
@@ -7,7 +6,7 @@ Auteurs <dsi-devq@listes.univ-rennes1.fr>
 == 1. Prérequis
 * JDK 1.7
 * Tomcat 7
-* Services REST du catalogue des applications installés en version 0.1.0
+* Services REST du catalogue des applications installés en version 0.1.0+
 
 == 2. Récupération de l{apos}archive de l{apos}application
 L{apos}application est packagée et déposée sur un dépôt centralisé disponible https://mvn.esup-portail.org/content/repositories/releases/org/esupportail/catapp-portlet/<version.application>/catapp-portlet-<version.application>.war[ici]
@@ -19,7 +18,7 @@ La documentation destinée à l{apos}administration d'un Uportal est disponible 
 
 Pour déployer l{apos}application, se positionner dans le répertoire source de Uportal et lancer la commande suivante :
 
-ant deployPortletApp -DportletApp=/path/to/catapp-portlet-<version.application>.war
+[small]+ant deployPortletApp -DportletApp=/path/to/catapp-portlet-<version.application>.war+
 
 == 4. Adapter et modifier la configuration de la portlet
 Utilisez alors l'interface graphique d'administration du portail pour publier et personnaliser les préférences de la portlet ''catapp-portlet''

@@ -180,7 +180,7 @@
 				<executions>
 				    <execution>
 					<id>output-html</id>
-					<phase>generate-resources</phase>
+					<phase>site</phase>
 					<goals>
 					    <goal>process-asciidoc</goal>
 					</goals>
