@@ -1,6 +1,6 @@
 catAppPortlet = function (appName, resourceURL, actionURL) {
 
-    var app = angular.module(appName, ['ui.bootstrap', 'ui.sortable', 'ngSanitize']);
+    var app = angular.module(appName, ['ui.bootstrap', 'ui.sortable', 'ngSanitize', 'ngAnimate']);
 
     app.controller('AppList2Ctrl', function ($scope, $http, FavorisService) {
 
@@ -29,11 +29,6 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
             $scope.updateFavorite();
         };
 
-        $scope.addToFav = function (idx) {
-            var addApp = $scope.allApplications[idx];
-            $scope.addFav(addApp);
-        };
-
         $scope.addFav = function (app) {
             var favTodd = FavorisService.find(app.code, $scope.prefs);
             if (!angular.isUndefined(favTodd) || favTodd != null) {
@@ -44,17 +39,19 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
                 $scope.updateFavorite();
                 $scope.alerts.push({type: 'success', msg: "L'application " + app.code + " a été ajoutée aux favoris"});
             }
-            $(".dropdown").fadeOut("slow");
             setTimeout(function() {
                 $(".alert").fadeOut("slow");
                 $scope.alerts = [];
             }, 1000)
         };
 
-        $scope.callTooltip = function(obj) {
-            var idt = obj.target;
-            $( idt ).next( '.dropdown').fadeToggle('slow');
-        }
+        $scope.enableEdit = function (item) {
+            item.editable = true;
+        };
+
+        $scope.disableEdit = function (item) {
+            item.editable = false;
+        };
 
         $scope.updateFavorite =  function ()  {
             $http
@@ -72,6 +69,8 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
             });
 
         $scope.sortableOptions = {
+            handle: ".handle",
+            cursor: 'move',
             // called after a node is dropped
             stop: function() {
                 var tmpList = [];
@@ -114,25 +113,28 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
         }
     });
 
-
     app.directive('domaine', function ($compile, $timeout) {
         return {
             restrict: "E",
             replace: true,
             scope: {
                 member: '=',
-                addFav: '&'
+                addFav: '&',
+                enableEdit: '&',
+                disableEdit: '&'
             },
             link: function (scope, element, attrs) {
                 if ((scope.member.subDomains.length > 0)) {
-                    element.append("<a href='#'><span class='ui-icon ui-icon-play'></span>{{member.domain.caption}}</a><ul class='sub-menu'><li ng-repeat='domaine in member.subDomains'>" +
-                                   "<domaine member='domaine' add-fav='addFav()'></domaine></li></ul>");
+                    element.append("<a href='#'><i class='fa fa-caret-right handle pull-left' style='float:left'></i>{{member.domain.caption}}</a><ul class='sub-menu'><li ng-repeat='domaine in member.subDomains'>" +
+                                   "<domaine member='domaine' add-fav='addFav()' enable-edit='enableEdit()' disable-edit='disableEdit()'></domaine></li></ul>");
                     $compile(element.contents())(scope)
                 } else {
-                    element.append("<a href='#'><span class='ui-icon ui-icon-play'></span>{{member.domain.caption}}</a>");
+                    element.append("<a href='#'><i class='fa fa-caret-right handle pull-left' style='float:left'></i>{{member.domain.caption}}</a>");
                 }
                 if ((scope.member.domain.applications.length > 0)) {
-                    element.append("<ul class='sub-menu menudrop'><application ng-repeat='member in member.domain.applications'  member='member' add-fav='addFav()'></application></ul>");
+                    element.append("<ul class='sub-menu menudrop'><application ng-repeat='member in member.domain.applications'  " +
+                                   "member='member' add-fav='addFav()' enable-edit='enableEdit()' disable-edit='disableEdit()'>" +
+                                   "</application></ul>");
                     $compile(element.contents())(scope)
                 }
             }
@@ -144,17 +146,31 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
             restrict: "E",
             replace: true,
             scope: {member: '=',
-                    addFav: '&'
+                    addFav: '&',
+                    enableEdit: '&',
+                    disableEdit: '&'
             },
-            template: "<li class='ui-state-focus'><a>{{member.title}}</a>" +
-                "<div class='dropdown'><span ng-bind-html='member.description'></span>" +
-                "<p>" +
-                "<a href='{{member.url}}' class='ui-state-default ui-corner-all' target='_blank'>Ouvrir l'application</a>" +
-                "<a href='#' ng-click='pushapp();' class='ui-state-default ui-corner-all addfav'>Ajouter aux favoris</a></p></div>" +
-                "</li>",
+            template:"<li class='list-group-item'>"+
+                     "<div style='float: right'>"+
+                     "<a ng-mouseover='enable()' ng-mouseleave='disable()' href='#'><i class='fa fa-question-circle pull-left'></i></a>"+
+                     "<a ng-click='pushapp();' href='#'><i class='fa fa-star-o text-warning pull-right' style='float: right'></i></a>"+
+                     "</div>"+
+                     "<a href='{{member.url}}' target='_blank'>{{member.title}}</a>"+
+                     "<div ng-show='member.editable' class='desc-appli'>"+
+                     "<div class='popover-title'>Description de l'application</div>"+
+                     "<div class='popover-content'><span ng-bind-html='member.description'></span>"+
+                     "</div>"+
+                     "</div>"+
+                     "</li>",
             link: function (scope, element, attrs) {
                 scope.pushapp = function () {
                         scope.addFav()(scope.member);
+                };
+                scope.enable = function () {
+                    scope.enableEdit()(scope.member);
+                };
+                scope.disable = function () {
+                    scope.disableEdit()(scope.member);
                 };
             }
         }

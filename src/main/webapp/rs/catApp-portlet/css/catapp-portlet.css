@@ -1,0 +1,91 @@
+.catapp .info-box {
+    background-color: #FAEBEB;
+    border: 1px solid #DC7070;
+    color: #212121;
+    border-radius: 4px;
+    display: block;
+    text-align: left;
+}
+
+/*Liste des domaines et applications autorisées*/
+.catapp .sidebar ul ul {
+    display: none;
+}
+
+.catapp .sidebar ul li {
+    list-style-type: none;
+    /*background: #dfeffc;*/
+    color: #2e6e9e;
+    padding: 2px;
+}
+
+.catapp .sidebar ul li a,
+.catapp .sidebar ul li a:link,
+.catapp .sidebar ul li a:visited {
+    color: #2e6e9e;
+    text-decoration: none;
+}
+
+.catapp .result-title {
+    font-weight: bold;
+    color: #2e6e9e;
+    margin-left: 2.5em;
+}
+
+.catapp .container {
+    padding-bottom:50px;
+}
+
+/*alert de modification de la liste des applications favorites*/
+.catapp .alertContainer {
+    height : 30px;
+}
+
+.catapp .tabsContainer {
+    position: relative;
+    top: 20px;
+}
+
+
+.portlet-container .list-group-item-info {
+    color: #31708f;
+    background-color: #d9edf7;
+}
+
+.catapp .desc-appli {
+    position: absolute;
+    align-content: flex-end;
+    z-index: 1010;
+    padding: 1px;
+    text-align: left;
+    white-space: normal;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    margin-top: 10px;
+    font-size: smaller;
+}
+
+.catapp .desc-appli .offtree {
+    top:15;
+}
+
+.catapp .desc-appli .popover-title {
+    padding: 3px 5px;
+}
+
+.catapp .desc-appli .popover-content {
+    padding: 3px 5px;
+    font-style: italic;
+}
+
+.catapp .unavailable {
+    color: #a6a6a6;
+}
+
+
+
