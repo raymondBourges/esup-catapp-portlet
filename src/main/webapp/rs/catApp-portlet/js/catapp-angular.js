@@ -150,10 +150,10 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
                     enableEdit: '&',
                     disableEdit: '&'
             },
-            template:"<li class='list-group-item'>"+
+            template:"<li class='list-group-item app-item'>"+
                      "<div style='float: right'>"+
                      "<a ng-mouseover='enable()' ng-mouseleave='disable()' href='#'><i class='fa fa-question-circle pull-left'></i></a>"+
-                     "<a ng-click='pushapp();' href='#'><i class='fa fa-star-o text-warning pull-right' style='float: right'></i></a>"+
+                     "<a ng-click='pushapp();' href='#'><i class='fa fa-star text-warning pull-right' style='float: right'></i></a>"+
                      "</div>"+
                      "<a href='{{member.url}}' target='_blank'>{{member.title}}</a>"+
                      "<div ng-show='member.editable' class='desc-appli'>"+

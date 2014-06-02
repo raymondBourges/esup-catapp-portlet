@@ -16,7 +16,7 @@
     list-style-type: none;
     /*background: #dfeffc;*/
     color: #2e6e9e;
-    padding: 2px;
+    padding: 2px 4px 2px 4px;
 }
 
 .catapp .sidebar ul li a,
@@ -24,6 +24,10 @@
 .catapp .sidebar ul li a:visited {
     color: #2e6e9e;
     text-decoration: none;
+}
+
+.catapp .sidebar ul li .app-item {
+    padding: 10px 15px;
 }
 
 .catapp .result-title {

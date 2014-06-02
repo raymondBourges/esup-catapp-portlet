@@ -93,7 +93,7 @@
                                 <li ng-repeat="application in filteredData" class="list-group-item list-group-item-info">
                                     <div style="float: right">
                                         <a ng-mouseover="enableEdit(application)" ng-mouseleave="disableEdit(application)" href="#"><i class="fa fa-question-circle pull-left"></i></a>
-                                        <a ng-click="addFav(application)" href="#"><i class="fa fa-star-o text-warning pull-right" style="float: right"></i></a>
+                                        <a ng-click="addFav(application)" href="#"><i class="fa fa-star text-warning pull-right" style="float: right"></i></a>
                                     </div>
                                     <a href="{{application.url}}" target="_blank">{{application.title}}</a>
                                     <div ng-show="application.editable" class="desc-appli offtree">
