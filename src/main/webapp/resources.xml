@@ -10,17 +10,16 @@
     <js included="plain" resource="true">/rs/components/jquery/dist/jquery.js</js>
     <js included="aggregated" resource="true">/rs/components/jquery/dist/jquery.min.js</js>
 
-    <js included="plain" resource="true">rs/components/jquery-ui/ui/jquery-ui.js</js>
-    <js included="aggregated" resource="true">rs/components/jquery-ui/ui/minified/jquery-ui.min.js</js>
-
     <js included="plain" resource="true">rs/components/angular/angular.js</js>
     <js included="aggregated" resource="true">rs/components/angular/angular.min.js</js>
-    <!--<js>rs/components/angular/angular.min.js</js>-->
+
     <js>rs/components/angular-resource/angular-resource.min.js</js>
     <js>rs/components/angular-sanitize/angular-sanitize.min.js</js>
     <js>rs/components/angular-ui-sortable/sortable.min.js</js>
+    <js>rs/components/jquery-ui/ui/jquery-ui.js</js>
     <js>rs/components/angular-animate/angular-animate.min.js</js>
     <js>rs/components/angular-bootstrap/ui-bootstrap.min.js</js>
     <js>rs/components/angular-bootstrap/ui-bootstrap-tpls.min.js</js>
     <js>rs/catApp-portlet/js/catapp-angular.js</js>
+
 </resources>

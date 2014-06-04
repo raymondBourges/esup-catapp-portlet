@@ -31,7 +31,7 @@ public class CatAppServImpl implements ICatAppServ {
     private WebTarget webTarget;
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static List<String> codesApp = new ArrayList<String>();
+    private static List<String> codesApp;
     private static ArrayNode allJApps = MAPPER.createArrayNode();
     private static JsonNode jDomTree = MAPPER.createArrayNode();
 
@@ -79,6 +79,8 @@ public class CatAppServImpl implements ICatAppServ {
                 .queryParam(wsUserPath, user);
         Response response = domainsTree.request().get();
         if(response.getStatus() == 200) {
+            allJApps.removeAll();
+            codesApp = new ArrayList<String>();
             String domainTree = response.readEntity(String.class);
             JsonNode nodeTree = MAPPER.readTree(domainTree);
             jDomTree = completeTree(nodeTree);

@@ -12,13 +12,13 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
 
         $http
             .get(url(encodeUrl(resourceURL), 'favapps')).success(function (data) {
-                angular.forEach(data.apps, function (app) {
-                    $scope.applications.push(FavorisService.create(app, false));
-                    $scope.prefs.push(app.code);
+                angular.forEach(data.apps, function (appli) {
+                    $scope.applications.push(FavorisService.create(appli, false));
+                    $scope.prefs.push(appli.code);
                 });
-                angular.forEach(data.noAccessApps, function (app) {
-                    $scope.applications.push(FavorisService.create(app, true));
-                    $scope.prefs.push(app.code);
+                angular.forEach(data.noAccessApps, function (appli) {
+                    $scope.applications.push(FavorisService.create(appli, true));
+                    $scope.prefs.push(appli.code);
                 });
             });
 
@@ -29,15 +29,15 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
             $scope.updateFavorite();
         };
 
-        $scope.addFav = function (app) {
-            var favTodd = FavorisService.find(app.code, $scope.prefs);
+        $scope.addFav = function (appli) {
+            var favTodd = FavorisService.find(appli.code, $scope.prefs);
             if (!angular.isUndefined(favTodd) || favTodd != null) {
-                $scope.alerts.push({type: 'danger', msg: "L'application " + app.code + " est déjà dans les favoris"});
+                $scope.alerts.push({type: 'danger', msg: "L'application " + appli.code + " est déjà dans les favoris"});
             } else {
-                $scope.applications.push(FavorisService.create(app, false));
+                $scope.applications.push(FavorisService.create(appli, false));
                 $scope.prefs.push(app.code);
                 $scope.updateFavorite();
-                $scope.alerts.push({type: 'success', msg: "L'application " + app.code + " a été ajoutée aux favoris"});
+                $scope.alerts.push({type: 'success', msg: "L'application " + appli.code + " a été ajoutée aux favoris"});
             }
             setTimeout(function() {
                 $(".alert").fadeOut("slow");
@@ -74,8 +74,8 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
             // called after a node is dropped
             stop: function() {
                 var tmpList = [];
-                angular.forEach($scope.applications, function (app) {
-                    tmpList.push(app.code);
+                angular.forEach($scope.applications, function (appli) {
+                    tmpList.push(appli.code);
                 });
                 $scope.prefs = tmpList;
                 $scope.updateFavorite();
@@ -86,8 +86,8 @@ catAppPortlet = function (appName, resourceURL, actionURL) {
 
     app.service('FavorisService', function () {
         //save method create a new favori
-        this.create = function (app, removed) {
-            var favori = {"code": app.code, "title": app.title, "caption": app.caption, "description": app.description, "url": app.url, "acces": app.activation, "state": removed};
+        this.create = function (appli, removed) {
+            var favori = {"code": appli.code, "title": appli.title, "caption": appli.caption, "description": appli.description, "url": appli.url, "acces": appli.activation, "state": removed};
             return favori;
         }
 
