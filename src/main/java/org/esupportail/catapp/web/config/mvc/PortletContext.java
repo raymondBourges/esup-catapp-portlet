@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Import(AppContext.class)
 @EnableWebMvc
 @ComponentScan(basePackages = { "org.esupportail.catapp" })
-public class PortletContext extends WebMvcConfigurerAdapter {
+public class PortletContext {
 
     @Autowired
     private ICatAppServ catAppSrev;
