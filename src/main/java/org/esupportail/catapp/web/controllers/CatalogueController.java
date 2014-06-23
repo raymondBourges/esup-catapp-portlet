@@ -1,25 +1,15 @@
 package org.esupportail.catapp.web.controllers;
 
-import java.io.IOException;
-import java.util.*;
-
-import javax.portlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.esupportail.catapp.domain.service.ICatAppServ;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.esupportail.catapp.domain.service.ICatAppServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
@@ -27,6 +17,9 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+
+import javax.portlet.*;
+import java.io.IOException;
 
 import static org.esupportail.catapp.web.controllers.CatalogueController.ResourceUrlW.wrap;
 
@@ -61,6 +54,9 @@ public class CatalogueController {
      */
     @RenderMapping
     public String goHome(RenderRequest request, RenderResponse response, ModelMap model) throws IOException, InterruptedException {
+        if (request.getWindowState().equals(WindowState.MINIMIZED)) {
+            return "mini";
+        }
         bindInitialModel(request);
         model.addAttribute("resourceURL",
                 wrap(response.createResourceURL())
