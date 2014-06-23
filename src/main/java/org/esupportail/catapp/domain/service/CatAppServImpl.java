@@ -53,8 +53,7 @@ public class CatAppServImpl implements ICatAppServ {
      * @throws MalformedURLException
      */
     public WebTarget createWebTarget(final String wsCatAppServiceURL) throws MalformedURLException {
-        ClientConfig config = new ClientConfig()
-                .connectorProvider(new ApacheConnectorProvider());
+        ClientConfig config = new ClientConfig().connectorProvider(new ApacheConnectorProvider());
         Client client = ClientBuilder.newClient(config);
         this.webTarget = client.target(wsCatAppServiceURL);
         return this.webTarget;
@@ -93,7 +92,7 @@ public class CatAppServImpl implements ICatAppServ {
         JsonNode doms;
         JsonNode apps = nodeTree.path("domain").path("applications");
         if(apps.isArray()) {
-            ((ObjectNode)nodeTree.path("domain")).put("applications", AppsForDom(apps));
+            ((ObjectNode)nodeTree.path("domain")).put("applications", appsForDom(apps));
         }
         for (JsonNode jsubDom : jDomTree.path("subDomains")) {
             completeTree(jsubDom);
@@ -101,7 +100,7 @@ public class CatAppServImpl implements ICatAppServ {
         return jDomTree;
     }
 
-    private JsonNode AppsForDom(JsonNode apps) throws IOException, InterruptedException {
+    private JsonNode appsForDom(JsonNode apps) throws IOException, InterruptedException {
         String appString;
         JsonNode jApp;
         ArrayNode jApps = MAPPER.createArrayNode();

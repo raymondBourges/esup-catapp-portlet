@@ -2,24 +2,33 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.jasig.org/uportal/web/skin https://source.jasig.org/schemas/resource-server/skin-configuration/skin-configuration-v1.2.xsd">
 
-    <css>rs/components/fontawesome/css/font-awesome.css</css>
-    <css>rs/catApp-portlet/css/catapp-portlet.css</css>
-    <css>rs/catApp-portlet/css/bootstrap.dev.3.0.1.modified.v4.css</css>
+    <css>rs/fontawesome/4.1.0/css/font-awesome-4.1.0.css</css>
+    <css>catapp-resources/css/catapp-portlet.css</css>
+    <css>catapp-resources/css/bootstrap.dev.3.0.1.modified.v4.css</css>
 
 
-    <js included="plain" resource="true">/rs/components/jquery/dist/jquery.js</js>
-    <js included="aggregated" resource="true">/rs/components/jquery/dist/jquery.min.js</js>
+    <js included="plain" resource="true">/rs/jquery/2.1.1/jquery-2.1.1.js</js>
+    <js included="aggregated" resource="true">/rs/jquery/2.1.1/jquery-2.1.1.min.js</js>
 
-    <js included="plain" resource="true">rs/components/angular/angular.js</js>
-    <js included="aggregated" resource="true">rs/components/angular/angular.min.js</js>
+    <js included="plain" resource="true">rs/angularjs/1.2.18/angular-1.2.18.js</js>
+    <js included="aggregated" resource="true">rs/angularjs/1.2.18/angular-1.2.18.min.js</js>
 
-    <js>rs/components/angular-resource/angular-resource.min.js</js>
-    <js>rs/components/angular-sanitize/angular-sanitize.min.js</js>
-    <js>rs/components/angular-ui-sortable/sortable.min.js</js>
-    <js>rs/components/jquery-ui/ui/jquery-ui.js</js>
-    <js>rs/components/angular-animate/angular-animate.min.js</js>
-    <js>rs/components/angular-bootstrap/ui-bootstrap.min.js</js>
-    <js>rs/components/angular-bootstrap/ui-bootstrap-tpls.min.js</js>
-    <js>rs/catApp-portlet/js/catapp-angular.js</js>
+    <js included="plain" resource="true">rs/angularjs/1.2.18/angular-sanitize-1.2.18.js</js>
+    <js included="aggregated" resource="true">rs/angularjs/1.2.18/angular-sanitize-1.2.18.min.js</js>
+
+    <js included="plain" resource="true">rs/angular-ui-sortable/0.12.7/sortable-0.12.7.js</js>
+    <js included="aggregated" resource="true">rs/angular-ui-sortable/0.12.7/sortable-0.12.7.min.js</js>
+
+    <js included="plain" resource="true">/rs/jquery-ui/1.10.4/jquery-ui-1.10.4.js</js>
+    <js included="aggregated" resource="true">/rs/jquery-ui/1.10.4/minified/jquery-ui-1.10.4.min.js</js>
+
+
+    <js included="plain" resource="true">rs/angular-bootstrap/0.11.0/ui-bootstrap-0.11.0.js</js>
+    <js included="aggregated" resource="true">rs/angular-bootstrap/0.11.0/ui-bootstrap-0.11.0.min.js</js>
+
+    <js included="plain" resource="true">rs/angular-bootstrap/0.11.0/ui-bootstrap-tpls-0.11.0.js</js>
+    <js included="aggregated" resource="true">rs/angular-bootstrap/0.11.0/ui-bootstrap-tpls-0.11.0.min.js</js>
+
+    <js>catapp-resources/js/catapp-angular.js</js>
 
 </resources>

@@ -160,16 +160,16 @@
 				<version>2.1.1</version>
 				<configuration>
 					<warName>catapp-portlet</warName>
-					<overlays>
-						<overlay>
-							<groupId>org.jasig.resourceserver</groupId>
-							<artifactId>resource-server-content</artifactId>
-							<includes>
-								<include>rs/jquery/1.9.1/</include>
-								<include>rs/jqueryui/1.10.4/</include>
-							</includes>
-						</overlay>
-					</overlays>
+					<!--<overlays>-->
+						<!--<overlay>-->
+							<!--<groupId>org.jasig.resourceserver</groupId>-->
+							<!--<artifactId>resource-server-content</artifactId>-->
+							<!--<includes>-->
+								<!--<include>rs/jquery/1.9.1/</include>-->
+								<!--<include>rs/jquery-ui/1.10.4/</include>-->
+							<!--</includes>-->
+						<!--</overlay>-->
+					<!--</overlays>-->
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
@@ -298,17 +298,17 @@
 			<artifactId>resource-server-utils</artifactId>
 			<version>${resourceserver.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.jasig.resourceserver</groupId>
-			<artifactId>resource-server-content</artifactId>
-			<version>${resourceserver.version}</version>
-			<type>war</type>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.jasig.resourceserver</groupId>-->
+			<!--<artifactId>resource-server-content</artifactId>-->
+			<!--<version>${resourceserver.version}</version>-->
+			<!--<type>war</type>-->
+		<!--</dependency>-->
 		<dependency>
 	        <groupId>org.springframework.hateoas</groupId>
 	        <artifactId>spring-hateoas</artifactId>
 	        <version>0.7.0.RELEASE</version>
-	    </dependency>
+        </dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

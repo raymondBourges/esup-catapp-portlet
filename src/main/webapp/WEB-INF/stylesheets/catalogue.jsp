@@ -4,16 +4,15 @@
 <%@ taglib prefix="rs" uri="http://www.jasig.org/resource-server" %>
 <rs:aggregatedResources path="/resources.xml"/>
 
-<html>
-<head>
-    <script type="text/javascript">
-        angular.element(document).ready(function () {
-            catAppPortlet("<portlet:namespace/>", "${resourceURL}", "${actionURL}");
-            angular.bootstrap(angular.element(document.getElementById("catAppPortlet-<portlet:namespace/>")), ["<portlet:namespace/>"]);
-        });
-    </script>
-</head>
+
+<script type="text/javascript">
+    angular.element(document).ready(function () {
+        catAppPortlet("<portlet:namespace/>", "${resourceURL}", "${actionURL}", "${containerURL}");
+        angular.bootstrap(angular.element(document.getElementById("catAppPortlet-<portlet:namespace/>")), ["<portlet:namespace/>"]);
+    });
+</script>
 <div id="catAppPortlet-<portlet:namespace/>" class="portlet-container catapp" ng-view>
+
     <div ng-controller="AppList2Ctrl" class="container">
             <div class="alertContainer">
                 <div class="alert alert-info" ng-repeat="alert in alerts">
@@ -32,17 +31,20 @@
                         </ng-switch>
                         <ul class="list-group" ui-sortable="sortableOptions" ng-model="applications">
                             <li ng-repeat="application in applications" class="list-group-item list-group-item-info">
-                                <i class="fa fa-sort handle pull-left" style="float:left"></i>
-                                <div style="float: right">
-                                    <a ng-mouseover="enableEdit(application)" ng-mouseleave="disableEdit(application)" href="#"><i class="fa fa-question-circle pull-left"></i></a>
-                                    <a ng-click="delFromFav($index)" href="#"><i class="fa fa-times-circle text-danger pull-right" style="float: right"></i></a>
+                                <a ng-click="enableEdit(application)" href="#"><i class="fa fa-lg fa-question-circle pull-left"></i></a>
+                                <a ng-click="delFromFav($index)" href="#"><i class="fa fa-lg fa-times-circle text-danger pull-left"></i></a>
+                                <div class="pull-right">
+                                    <i class="fa fa-lg fa-sort handle"></i>
                                 </div>
                                 <div ng-switch="{{application.state}}" class="cat-appli">
-
                                     <div ng-switch-when="true">
                                         <span class="unavailable">{{application.title}}</span>
                                         <div ng-show="application.editable" class="desc-appli offtree">
-                                            <div class="popover-title">Description de l'application</div>
+                                            <div class="popover-title">Description de l'application
+                                                <div class="pull-right">
+                                                   <a ng-click="disableEdit(application)" href="#"><i class="fa fa-lg fa-times"></i></a>
+                                                </div>
+                                            </div>
                                             <div class="popover-content">Vous n'avez pas les droits suffisants pour acc&eacute;der &agrave; cette application</div>
                                         </div>
                                     </div>
@@ -51,18 +53,25 @@
                                         <div ng-switch="application.acces">
 
                                             <div ng-switch-when="Activated">
-                                                <a href="{{application.url}}" target="_blank">{{application.title}}</a>
+                                                <a href="{{application.url}}" target="{{application.target}}">{{application.title}}</a>
                                                 <div ng-show="application.editable" class="desc-appli offtree">
-                                                    <div class="popover-title">Description de l'application</div>
-                                                    <div class="popover-content"><span ng-bind-html="application.description"></span>
+                                                    <div class="popover-title">Description de l'application
+                                                        <div  class="pull-right">
+                                                            <a  ng-click="disableEdit(application)" href="#"><i class="fa fa-lg fa-times"></i></a>
+                                                        </div>
                                                     </div>
+                                                    <div class="popover-content"><span ng-bind-html="application.description"></span></div>
                                                 </div>
                                             </div>
 
                                             <div ng-switch-when="Deactivated">
                                                 <span class="unavailable" ng-click="callTooltip($event)">{{application.title}}</span>
                                                 <div ng-show="application.editable" class="desc-appli offtree">
-                                                    <div class="popover-title">Description de l'application</div>
+                                                    <div class="popover-title">Description de l'application
+                                                        <div class="pull-right">
+                                                            <a ng-click="disableEdit(application)" href="#"><i class="fa fa-lg fa-times"></i></a>
+                                                        </div>
+                                                    </div>
                                                     <div class="popover-content">
                                                         <span class="info-box">L'application est provisoirement indisponible</span>
                                                         <span ng-bind-html="application.description"></span>
@@ -91,13 +100,19 @@
                             <span class="result-title">R&eacute;sultat de la recherche : </span>
                             <ul>
                                 <li ng-repeat="application in filteredData" class="list-group-item list-group-item-info">
-                                    <div style="float: right">
-                                        <a ng-mouseover="enableEdit(application)" ng-mouseleave="disableEdit(application)" href="#"><i class="fa fa-question-circle pull-left"></i></a>
-                                        <a ng-click="addFav(application)" href="#"><i class="fa fa-star text-warning pull-right" style="float: right"></i></a>
-                                    </div>
-                                    <a href="{{application.url}}" target="_blank">{{application.title}}</a>
+                                    <a ng-click="enableEdit(application)" href="#"><i class="fa fa-lg fa-question-circle pull-left"></i></a>
+                                    <a ng-click="addFav(application)" href="#">
+                                        <i ng-class="{'fa-star-o':prefs.indexOf(application.code)== -1,
+                                        'fa-star':prefs.indexOf(application.code)> -1}"
+                                        class="fa fa-lg text-warning pull-left"></i>
+                                    </a>
+                                    <a href="{{application.url}}" target="{{application.target}}">{{application.title}}</a>
                                     <div ng-show="application.editable" class="desc-appli offtree">
-                                        <div class="popover-title">Description de l'application</div>
+                                        <div class="popover-title">Description de l'application
+                                            <div class="pull-right">
+                                                <a ng-click="disableEdit(application)" href="#"><i class="fa fa-lg fa-times"></i></a>
+                                            </div>
+                                        </div>
                                         <div class="popover-content"><span ng-bind-html="application.description"></span>
                                         </div>
                                     </div>
@@ -115,9 +130,9 @@
                                             <a href="javascript:void(0)">{{domaines.domain.caption}}</a>
                                             <ul class="sub-menu">
                                                 <li ng-repeat="domaine in domaines.domain.applications">
-                                                    <application member="domaine" add-fav="addFav" enable-edit="enableEdit" disable-edit="disableEdit"></application></li>
+                                                    <application member="domaine" add-fav="addFav" enable-edit="enableEdit" disable-edit="disableEdit" prefs="prefs" get-target="getTarget"></application></li>
                                                 <li ng-repeat="domaine in domaines.subDomains">
-                                                    <domaine member="domaine" add-fav="addFav" enable-edit="enableEdit" disable-edit="disableEdit"></domaine></li>
+                                                    <domaine member="domaine" add-fav="addFav" enable-edit="enableEdit" disable-edit="disableEdit" prefs="prefs" get-target="getTarget"></domaine></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -134,28 +149,28 @@
             </tab>
         </tabset>
         </div>
+    </div>
+    <script type="text/javascript">
+        function launchJs() {
+            var menu = document.createElement('script');
+            menu.type = 'text/javascript';
+            menu.innerHTML = htmlString;
+            document.getElementById('dropdown-Menu-<portlet:namespace/>').appendChild(menu);
+        }
+        setTimeout("launchJs();", 2000)
+
+
+        var htmlString = "$(document).ready(function() {";
+
+        htmlString += "$('#sidebar-<portlet:namespace/> ul li a').click(function(ev) {";
+        htmlString += "$('#sidebar-<portlet:namespace/> .sub-menu').not($(this).parents('.sub-menu')).slideUp();";
+        htmlString += "$(this).next('.sub-menu').slideToggle();";
+        htmlString += "ev.stopPropagation();";
+        htmlString += "});"
+        htmlString += "$('.menudrop li a').click(function(ev) {";
+        htmlString += "$(this).next('.dropdown').fadeToggle('slow');";
+        htmlString += "});"
+
+        htmlString += "});";
+    </script>
 </div>
-<script type="text/javascript">
-    function launchJs() {
-        var menu = document.createElement('script');
-        menu.type = 'text/javascript';
-        menu.innerHTML = htmlString;
-        document.getElementById('dropdown-Menu-<portlet:namespace/>').appendChild(menu);
-    }
-    setTimeout("launchJs();", 2000)
-
-
-    var htmlString = "$(document).ready(function() {";
-
-    htmlString += "$('#sidebar-<portlet:namespace/> ul li a').click(function(ev) {";
-    htmlString += "$('#sidebar-<portlet:namespace/> .sub-menu').not($(this).parents('.sub-menu')).slideUp();";
-    htmlString += "$(this).next('.sub-menu').slideToggle();";
-    htmlString += "ev.stopPropagation();";
-    htmlString += "});"
-    htmlString += "$('.menudrop li a').click(function(ev) {";
-    htmlString += "$(this).next('.dropdown').fadeToggle('slow');";
-    htmlString += "});"
-
-    htmlString += "});";
-</script>
-</html>

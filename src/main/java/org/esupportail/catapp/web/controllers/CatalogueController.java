@@ -1,11 +1,11 @@
 package org.esupportail.catapp.web.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.portlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,6 +61,7 @@ public class CatalogueController {
      */
     @RenderMapping
     public String goHome(RenderRequest request, RenderResponse response, ModelMap model) throws IOException, InterruptedException {
+        bindInitialModel(request);
         model.addAttribute("resourceURL",
                 wrap(response.createResourceURL())
                         .withResId("@@id@@")
@@ -75,7 +76,10 @@ public class CatalogueController {
         actionURL.setParameter("p2", "__p2__");
         actionURL.setParameter("p3", "__p3__");
         model.addAttribute("actionURL", actionURL);
-        bindInitialModel(request);
+        String fragUrl1 = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort();
+        String fragUrl2 = response.createRenderURL().toString();
+        String containerUrl = fragUrl1+"/"+fragUrl2;
+        model.addAttribute("containerURL", fragUrl1.toLowerCase()+fragUrl2.toLowerCase());
         return "catalogue";
     }
 
@@ -93,8 +97,7 @@ public class CatalogueController {
 
     /**
      * Add preferred application to spring MVC model
-     * @param request
-     *            RenderRequest the request
+     * @param request RenderRequest the request
      * @return completed spring MVC model
      */
     @ResourceMapping(value = "favapps")
@@ -130,8 +133,7 @@ public class CatalogueController {
 
     /**
      * Add domains tree to spring MVC model
-     * @param request
-     *            RenderRequest the request
+     * @param request RenderRequest the request
      * @return completed spring MVC model
      */
     @ResourceMapping(value = "doms")
@@ -144,8 +146,7 @@ public class CatalogueController {
 
     /**
      * Add all allowed applications to spring MVC model
-     * @param request
-     *            RenderRequest the request
+     * @param request RenderRequest the request
      * @return completed spring MVC model
      */
     @ResourceMapping(value = "allowedapps")
